@@ -25,9 +25,9 @@ import com.ajouton.tortee.ui.theme.TorTeeTheme
 @Composable
 fun TorTeeMyPageScreen(
     modifier: Modifier,
-    viewModel: TorTeeViewModel
+    viewModel: TorTeeViewModel,
 ) {
-    var user by remember { mutableStateOf(User())}
+    var user by remember { mutableStateOf(User()) }
 
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
@@ -70,33 +70,87 @@ fun TorTeeMyPageScreen(
                     )
                 }
             }
-            Card() {
-                Column() {
-                    Text(text = stringResource(id = R.string.mypage_info))
-                    Text(text = user.info)
+            Card(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+            ) {
+                Column(
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.mypage_info),
+                        style = MaterialTheme.typography.h5
+                    )
+                    Text(
+                        text = user.info,
+                        style = MaterialTheme.typography.body1,
+                        modifier = Modifier.padding(start = 10.dp)
+                    )
                 }
             }
-            Card() {
-                Column() {
-                    Text(text = stringResource(id = R.string.mypage_technic))
-                    LazyColumn{
-                        items(user.technics) {
-                                technic ->
-                            Text(text = technic)
+            Card(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+            ) {
+                Column(
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.mypage_technic),
+                        style = MaterialTheme.typography.h5
+                    )
+                    LazyColumn {
+                        items(user.technics) { technic ->
+                            Text(
+                                text = technic,
+                                style = MaterialTheme.typography.body1
+                            )
                         }
                     }
                 }
             }
         }
-        Row() {
-            Button(onClick = { /*TODO*/ }) {
-                
+        Row(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+        ) {
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .padding(10.dp)
+                    .weight(1f)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.button_my_mentor),
+                    style = MaterialTheme.typography.button
+                )
             }
-            Button(onClick = { /*TODO*/ }) {
-
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .padding(10.dp)
+                    .weight(1f)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.button_my_mentee),
+                    style = MaterialTheme.typography.button
+                )
             }
-            Button(onClick = { /*TODO*/ }) {
-
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .padding(10.dp)
+                    .weight(1f)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.button_my_document),
+                    style = MaterialTheme.typography.button
+                )
             }
         }
     }

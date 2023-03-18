@@ -1,5 +1,8 @@
 package com.ajouton.tortee
 
+import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,6 +29,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        val TorTeeViewModel: TorTeeViewModel = TorTeeViewModel(factory = TorTeeViewModel.Factory)
+        val sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE)
         setContent {
             TorTeeTheme {
                 // A surface container using the 'background' color from the theme
@@ -33,6 +37,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+
                     val viewModel: TorTeeViewModel = viewModel()
                     if(viewModel.signUpPageVisibility.collectAsState().value) {
                         SignUpScreen(
@@ -44,6 +49,7 @@ class MainActivity : ComponentActivity() {
                             viewModel = viewModel
                         )
                     } else {
+                        sharedPreferences.edit().putInt(getString(R.string.preference_user_id),viewModel.userSignInResponse.collectAsState().value.id).apply()
                         TorTeeScreen(
                             viewModel = viewModel
                         )
