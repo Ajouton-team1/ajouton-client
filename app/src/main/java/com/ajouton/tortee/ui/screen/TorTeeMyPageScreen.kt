@@ -259,7 +259,7 @@ fun MyPeopleCard(
             modifier = Modifier
         ) {
             Image(
-                painter = painterResource(id = user.imageResId),
+                painter = painterResource(id = R.drawable.user_icon),
                 contentDescription = null,
                 modifier = Modifier
                     .size(120.dp)

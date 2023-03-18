@@ -230,7 +230,7 @@ fun BulletinBoardListItem(
                     modifier = Modifier
                 ) {
                     Image(
-                        painter = painterResource(id = bulletin.writer.imageResId),
+                        painter = painterResource(id = R.drawable.user_icon),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
                     )
@@ -299,7 +299,7 @@ fun BulletinContentDialog(
                     modifier = Modifier
                 ) {
                     Image(
-                        painter = painterResource(id = bulletin.writer.imageResId),
+                        painter = painterResource(id = R.drawable.user_icon),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
                     )
