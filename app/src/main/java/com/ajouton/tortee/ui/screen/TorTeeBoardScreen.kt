@@ -271,7 +271,7 @@ fun BulletinBoardListItem(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = bulletin.writer.name,
+                        text = bulletin.writer,
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )
@@ -451,7 +451,7 @@ fun BulletinContentDialog(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = bulletin.writer.name,
+                        text = bulletin.writer,
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )

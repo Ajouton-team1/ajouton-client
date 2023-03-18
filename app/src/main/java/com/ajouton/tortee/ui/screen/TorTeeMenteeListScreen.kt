@@ -116,9 +116,9 @@ fun MenteeBoard(
 ) {
     // test 용도
     val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
-        MenteeBulletin(writer = User(name = "Test1")),
-        MenteeBulletin(writer = User(name = "Test2")),
-        MenteeBulletin(writer = User(name = "Test3"))
+        MenteeBulletin(writer = "Test1"),
+        MenteeBulletin(writer = "Test2"),
+        MenteeBulletin(writer = "Test3")
     )
 
     Column(
@@ -205,7 +205,7 @@ fun MenteeBulletinCard(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = bulletin.writer.name,
+                        text = bulletin.writer,
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )
@@ -381,7 +381,7 @@ fun MenteeBulletinDialog(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = bulletin.writer.name,
+                        text = bulletin.writer,
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )
