@@ -370,7 +370,7 @@ fun MentorRequestDialog(
             }
             Row(modifier = Modifier.padding(10.dp)) {
                 Button(
-                    onClick = onSubmitRequest,
+                    onClick = onDismissRequest,
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
