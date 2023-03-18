@@ -77,7 +77,8 @@ fun TorTeeMentorListScreen(
                 targetUser = user
             },
             modifier = Modifier
-                .weight(7f)
+                .weight(7f),
+            // userList = /* TODO userList*/
         )
     }
 }
@@ -86,7 +87,9 @@ fun TorTeeMentorListScreen(
 fun MentorFinderBoard(
     onClickCard: (User) -> Unit,
     modifier: Modifier,
+    userList: List<User> = listOf()
 ) {
+    /*
     // test 용도
     val userList: List<User> = listOf<User>(
         User(
@@ -105,6 +108,7 @@ fun MentorFinderBoard(
             name = "testName1", technics = listOf<String>("test1")
         )
     )
+    */
 
     Column(
         modifier = modifier.fillMaxSize()
@@ -370,7 +374,7 @@ fun MentorRequestDialog(
             }
             Row(modifier = Modifier.padding(10.dp)) {
                 Button(
-                    onClick = onSubmitRequest,
+                    onClick = onDismissRequest,
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)

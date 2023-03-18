@@ -6,3 +6,4 @@ data class UserSignUpResponse(
     @SerializedName("result")
     var result : Int
 )
+
