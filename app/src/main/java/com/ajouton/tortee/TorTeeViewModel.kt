@@ -58,7 +58,7 @@ class TorTeeViewModel() : ViewModel() {
     // bulletin
     private val _isBulletinContentShowing = MutableStateFlow(false)
     private val _isBulletinWriterShowing = MutableStateFlow(false)
-    private val _selectedBulletin = MutableStateFlow(Bulletin("", "", ""))
+    private val _selectedBulletin = MutableStateFlow(Bulletin())
 
 
     val uiState: StateFlow<TorteeUIState> = _uiState
@@ -144,7 +144,7 @@ class TorTeeViewModel() : ViewModel() {
         }
         if(visibility) {
             _selectedBulletin.update {
-                bulletin ?: Bulletin("empty", "empty", "empty")
+                bulletin ?: Bulletin()
             }
         }
     }
