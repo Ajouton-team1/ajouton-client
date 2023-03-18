@@ -59,7 +59,8 @@ fun TorTeeMentorListScreen(
         if (isDialogVisible) {
             MentorRequestDialog(
                 onDismissRequest = { isDialogVisible = false },
-                onSubmitRequest = { 
+                onSubmitRequest = { targetUser ->
+                    viewModel.makeMatching(false, targetUser.id)
                 },
                 user = targetUser
             )
@@ -225,7 +226,7 @@ fun NavigationBarAbove(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .background(Color(R.color.search_bar))
+                    .background(color = Color(0xFFF0E9D2))
                     .padding(10.dp, 0.dp)
             ) {
                 TextField(
@@ -370,7 +371,7 @@ fun MentorRequestDialog(
                     }
                 }
             }
-            Row(modifier = Modifier.padding(10.dp)) {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Button(
                     onClick = onDismissRequest,
                     modifier = Modifier
@@ -383,8 +384,6 @@ fun MentorRequestDialog(
                         style = MaterialTheme.typography.button,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(10.dp)
                     )
                 }
                 Button(
@@ -399,11 +398,8 @@ fun MentorRequestDialog(
                         style = MaterialTheme.typography.button,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(10.dp)
                     )
                 }
-
             }
         }
     }
