@@ -28,6 +28,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.ajouton.tortee.R
 import com.ajouton.tortee.TorTeeViewModel
+import com.ajouton.tortee.model.Bulletin
 import com.ajouton.tortee.model.MenteeBulletin
 import com.ajouton.tortee.model.User
 import com.ajouton.tortee.ui.theme.TorTeeTheme
@@ -416,7 +417,7 @@ fun MenteeBulletinDialog(
 @Composable
 fun MenteeBulletinMakeDialog(
     onDismissRequest: () -> Unit,
-    onSubmitRequest: () -> Unit,
+    onSubmitRequest: (MenteeBulletin) -> Unit,
     user: User,
     properties: DialogProperties = DialogProperties(),
 ) {
@@ -533,7 +534,7 @@ fun MenteeBulletinMakeDialog(
                     )
                 }
                 Button(
-                    onClick = onSubmitRequest,
+                    onClick = { onSubmitRequest(MenteeBulletin(writer = user.name, title = title, writeDate = current, content = content, tag = tag)) },
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
