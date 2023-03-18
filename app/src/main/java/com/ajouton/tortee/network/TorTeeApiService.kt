@@ -15,6 +15,12 @@ interface TorTeeApiService {
         @Body signInParams: UserSignInRequest
     ): UserSignInResponse
 
+
+    @POST("member/signIn")
+    suspend fun signUp(
+        @Body signUpParams: UserSignUpRequest
+    ): UserSignUpResponse
+
     @GET("/posting/all")
     suspend fun getMentiList(
     ): MentiBulletinResponse
