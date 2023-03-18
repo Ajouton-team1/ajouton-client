@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ajouton.tortee.data.BoardDataProvider
 import com.ajouton.tortee.model.Bulletin
 import com.ajouton.tortee.data.ViewType
@@ -34,6 +35,8 @@ class TorTeeViewModel() : ViewModel() {
     }
 
     private val _uiState = MutableStateFlow(TorteeUIState())
+    private val _userInfo = MutableStateFlow(User(-1, "", "", "", "", listOf()))
+    private val _getMyInfoResponse = MutableStateFlow<GetMyInfoResponse?>(null)
 
     // sign up
     private val _signUpPageVisibility = MutableStateFlow(false)
@@ -62,6 +65,8 @@ class TorTeeViewModel() : ViewModel() {
 
 
     val uiState: StateFlow<TorteeUIState> = _uiState
+    val userInfo: StateFlow<User> = _userInfo
+    val getMyInfoResponse: StateFlow<GetMyInfoResponse?> = _getMyInfoResponse
 
     // sign up
     val signUpPageVisibility: StateFlow<Boolean> = _signUpPageVisibility
@@ -155,36 +160,52 @@ class TorTeeViewModel() : ViewModel() {
 
     fun makeMatching(isMentor: Boolean, target: Int) {
         lateinit var makeMatchingRequest: MakeMatchingRequest
-        if(isMentor) {
-            makeMatchingRequest = MakeMatchingRequest(userSignInResponse.value.id, target)
+        makeMatchingRequest = if(isMentor) {
+            MakeMatchingRequest(userSignInResponse.value.id, target)
         } else {
-            makeMatchingRequest = MakeMatchingRequest(target, userSignInResponse.value.id)
-
+            MakeMatchingRequest(target, userSignInResponse.value.id)
         }
         viewModelScope.launch {
             try {
-                Log.e("searchMentor", "Success")
+
+                Log.e("makeMatching", "Success")
                 retrofitService.makeMatching(makeMatchingRequest)
             } catch(e: IOException) {
                 e.printStackTrace()
-                Log.e("searchMentor","IOException")
+                Log.e("makeMatching","IOException")
                 null
             } catch(e: HttpException) {
-                Log.e("searchMentor","HttpException")
+                Log.e("makeMatching","HttpException")
                 null
             }
         }
     }
+//
+//    fun getMyMentors() {
+//        viewModelScope.launch {
+//            try {
+//                Log.e("getMyMentors", "Success")
+//                retrofitService.getMyMentors()
+//            } catch(e: IOException) {
+//                e.printStackTrace()
+//                Log.e("getMyMentors","IOException")
+//                null
+//            } catch(e: HttpException) {
+//                Log.e("getMyMentors","HttpException")
+//                null
+//            }
+//        }
+//    }
 
     @SuppressLint("SuspiciousIndentation")
     fun searchMentor(tag: String) {
         Log.e("", tag)
         Log.e("", listOf(tag).toString())
         lateinit var searchMentorRequest: GetUserRequest
-        if(tag == "") {
-            searchMentorRequest = GetUserRequest(listOf(), userSignInResponse.value.id)
+        searchMentorRequest = if(tag == "") {
+            GetUserRequest(listOf(), userSignInResponse.value.id)
         } else {
-            searchMentorRequest = GetUserRequest(listOf(tag), userSignInResponse.value.id)
+            GetUserRequest(listOf(tag), userSignInResponse.value.id)
         }
         viewModelScope.launch {
             _searchMentorResponse.update {
@@ -267,6 +288,18 @@ class TorTeeViewModel() : ViewModel() {
                 Log.e("", userSignInResponse.value.result.toString())
                 Log.e("", userSignInResponse.value.id.toString())
                 userSignInResponse.value.result
+            }
+        }
+        val getMyInfoRequest = GetMyInfoRequest(userSignInResponse.value.id)
+        viewModelScope.launch {
+            _getMyInfoResponse.update {
+                try {
+                    retrofitService.getMyInfo(getMyInfoRequest)
+                } catch(e: IOException) {
+                    null
+                } catch(e: HttpException) {
+                    null
+                }
             }
         }
     }

@@ -31,14 +31,32 @@ interface TorTeeApiService {
     ): MentiBulletinResponse
 
     @GET("/posting")
-    fun getOneMenti(
+    suspend fun getOneMenti(
         @Query("postingId") postingId : Int?,
     ): MentiDetailResponse
 
     @POST("/matching")
-    fun makeMatching(
+    suspend fun makeMatching(
         @Body makeMatchingParams: MakeMatchingRequest
     ): MakeMatchingResponse
-
-
+//
+//    @GET("/matching/myMentor")
+//    suspend fun getMyMentors(
+//        @Body getMyMentorsParams: GetMyMentorsRequest
+//    ): GetMyMentorsResponse
+//
+//    @GET("/matching/myMentee")
+//    suspend fun getMyMentees(
+//        @Body getMyMenteesParams: GetMyMenteesRequest
+//    ): GetMyMenteesResponse
+//
+//    @POST("/posting")
+//    suspend fun writeMenteePosting(
+//        @Body writeMenteePostingParams: WriteMenteePostingRequest
+//    ): WriteMenteePostingResponse
+//
+//    @GET("/member/myInfo")
+    suspend fun getMyInfo(
+        @Query("") getMyInfoParams: GetMyInfoRequest
+    ): GetMyInfoResponse?
 }
