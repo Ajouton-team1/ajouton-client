@@ -1,4 +1,4 @@
-package com.ajouton.tortee.ui
+package com.ajouton.tortee.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

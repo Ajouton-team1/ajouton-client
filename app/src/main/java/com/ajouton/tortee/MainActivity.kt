@@ -1,14 +1,10 @@
 package com.ajouton.tortee
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -18,24 +14,20 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.ajouton.tortee.Menti.MentiFragment
-import com.ajouton.tortee.databinding.ActivityMainBinding
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ajouton.tortee.data.ViewType
-import com.ajouton.tortee.ui.TorTeeBoardScreen
-import com.ajouton.tortee.ui.TorTeeMenteeListScreen
-import com.ajouton.tortee.ui.TorTeeMentorListScreen
-import com.ajouton.tortee.ui.TorTeeMyPageScreen
+import com.ajouton.tortee.ui.screen.TorTeeBoardScreen
+import com.ajouton.tortee.ui.screen.TorTeeMenteeListScreen
+import com.ajouton.tortee.ui.screen.TorTeeMentorListScreen
+import com.ajouton.tortee.ui.screen.TorTeeMyPageScreen
 import com.ajouton.tortee.ui.state.TorteeUIState
 import com.ajouton.tortee.ui.theme.TorTeeTheme
-class MainActivity : AppCompatActivity(){
 
-
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        super.onCreate(savedInstanceState)
         setContent {
             TorTeeTheme {
                 // A surface container using the 'background' color from the theme
