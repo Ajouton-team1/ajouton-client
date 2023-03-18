@@ -18,16 +18,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ajouton.tortee.data.ViewType
-import com.ajouton.tortee.ui.screen.TorTeeBoardScreen
-import com.ajouton.tortee.ui.screen.TorTeeMenteeListScreen
-import com.ajouton.tortee.ui.screen.TorTeeMentorListScreen
-import com.ajouton.tortee.ui.screen.TorTeeMyPageScreen
+import com.ajouton.tortee.model.User
+import com.ajouton.tortee.network.UserSignUpRequest
+import com.ajouton.tortee.ui.screen.*
 import com.ajouton.tortee.ui.state.TorteeUIState
 import com.ajouton.tortee.ui.theme.TorTeeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        val TorTeeViewModel: TorTeeViewModel = TorTeeViewModel(factory = TorTeeViewModel.Factory)
         setContent {
             TorTeeTheme {
                 // A surface container using the 'background' color from the theme
@@ -36,9 +36,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val viewModel: TorTeeViewModel = viewModel()
-                    TorTeeScreen(
+                    SignUpScreen(
                         viewModel = viewModel
                     )
+//                    TorTeeScreen(
+//                        viewModel = viewModel
+//                    )
                 }
             }
         }
