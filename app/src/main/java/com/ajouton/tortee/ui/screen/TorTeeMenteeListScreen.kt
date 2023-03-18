@@ -190,7 +190,7 @@ fun MenteeBulletinCard(
                     modifier = Modifier
                 ) {
                     Image(
-                        painter = painterResource(id = bulletin.writer.imageResId),
+                        painter = painterResource(id = R.drawable.user_icon),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
                     )
@@ -355,7 +355,7 @@ fun NavigationBarAbove_Mentee(
                         modifier = Modifier
                     ) {
                         Image(
-                            painter = painterResource(id = bulletin.writer.imageResId),
+                            painter = painterResource(id = R.drawable.user_icon),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
                         )

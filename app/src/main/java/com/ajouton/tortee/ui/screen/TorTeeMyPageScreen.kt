@@ -54,7 +54,7 @@ fun TorTeeMyPageScreen(
                     .padding(10.dp)
             ) {
                 Image(
-                    painter = painterResource(id = user.imageResId),
+                    painter = painterResource(id = R.drawable.user_icon),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
