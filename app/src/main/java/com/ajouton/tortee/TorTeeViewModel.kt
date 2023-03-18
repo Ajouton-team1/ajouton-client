@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ajouton.tortee.data.BoardDataProvider
 import com.ajouton.tortee.model.Bulletin
 import com.ajouton.tortee.data.ViewType
+import com.ajouton.tortee.model.User
 import com.ajouton.tortee.network.*
 import com.ajouton.tortee.ui.state.TorteeUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,7 +52,7 @@ class TorTeeViewModel() : ViewModel() {
     // bulletin
     private val _isBulletinContentShowing = MutableStateFlow(false)
     private val _isBulletinWriterShowing = MutableStateFlow(false)
-    private val _selectedBulletin = MutableStateFlow(Bulletin("", "", ""))
+    private val _selectedBulletin = MutableStateFlow(Bulletin())
 
 
     val uiState: StateFlow<TorteeUIState> = _uiState
@@ -129,7 +130,7 @@ class TorTeeViewModel() : ViewModel() {
         }
         if(visibility) {
             _selectedBulletin.update {
-                bulletin ?: Bulletin("empty", "empty", "empty")
+                bulletin ?: Bulletin()
             }
         }
     }
