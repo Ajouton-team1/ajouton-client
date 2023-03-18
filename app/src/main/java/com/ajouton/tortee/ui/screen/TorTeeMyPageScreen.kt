@@ -1,6 +1,7 @@
 package com.ajouton.tortee.ui.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,8 @@ import androidx.compose.material3.Card
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -39,9 +42,9 @@ fun TorTeeMyPageScreen(
     var user by remember { mutableStateOf(User()) }
     var dialogIndex by remember { mutableStateOf(0) }
     when(dialogIndex) {
-        1 -> MyMentorDialog(onDismissRequest = { dialogIndex = 0 }, users = listOf())
+        1 -> MyMentorDialog(onDismissRequest = { dialogIndex = 0 }, users = listOf(User(),User()))
         2 -> MyMenteeDialog(onDismissRequest = { dialogIndex = 0 }, users = listOf())
-        3 -> MyHistoryDialog(onDismissRequest = { dialogIndex = 0 }, bulletins = listOf())
+        3 -> MyHistoryDialog(onDismissRequest = { dialogIndex = 0 }, bulletins = listOf(Bulletin("","Title","Body")))
     }
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
@@ -171,16 +174,66 @@ fun TorTeeMyPageScreen(
 }
 
 @Composable
-fun MyMentorGrid(
-    users: List<User>,
-    modifier: Modifier
+fun MyHistoryGrid(
+    bulletins: List<Bulletin>
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp),
+    LazyColumn(
+        modifier = Modifier.padding(top = 20.dp, start = 10.dp, end = 10.dp)
+    ) {
+        items(bulletins) { bulletin ->
+            MyHistoryCard(
+                bulletin = bulletin,
+                modifier = Modifier
+            )
+        }
+    }
+}
+
+@Composable
+fun MyHistoryCard(
+    bulletin: Bulletin,
+    modifier: Modifier,
+) {
+    androidx.compose.material.Card(
+        elevation = 4.dp,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(170.dp)
+            .padding(8.dp),
+        shape = RoundedCornerShape(24.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceAround,
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Text(
+                text = bulletin.title,
+                style = MaterialTheme.typography.h4,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.padding(0.dp,10.dp))
+            Text(
+                text = bulletin.content,
+                maxLines = 2,
+                modifier = Modifier
+                    .padding(start = 5.dp)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun MyPeopleGrid(
+    users: List<User>
+) {
+    LazyColumn(
         modifier = Modifier.padding(top = 20.dp, start = 10.dp, end = 10.dp)
     ) {
         items(users) { user ->
-            MyMentorCard(
+            MyPeopleCard(
                 user = user,
                 modifier = Modifier
             )
@@ -189,20 +242,21 @@ fun MyMentorGrid(
 }
 
 @Composable
-fun MyMentorCard(
+fun MyPeopleCard(
     user: User,
     modifier: Modifier,
 ) {
     androidx.compose.material.Card(
         elevation = 4.dp,
         modifier = modifier
-            .width(200.dp)
-            .height(230.dp)
+            .fillMaxWidth()
+            .height(160.dp)
             .padding(8.dp),
         shape = RoundedCornerShape(24.dp)
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
         ) {
             Image(
@@ -212,24 +266,24 @@ fun MyMentorCard(
                     .size(120.dp)
                     .padding(10.dp)
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            Column(
+                verticalArrangement = Arrangement.SpaceAround,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(id = user.rankResId),
-                    contentDescription = null
+                Text(
+                    text = user.name,
+                    style = MaterialTheme.typography.h5
                 )
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(
-                    text = user.name,
+                    text = user.email,
                     style = MaterialTheme.typography.h6
                 )
             }
-            TechnicListColumn(technics = user.technics)
         }
     }
 }
+
 @Composable
 fun MyMentorDialog(
     onDismissRequest: () -> Unit,
@@ -240,11 +294,24 @@ fun MyMentorDialog(
         onDismissRequest = onDismissRequest,
         properties = properties
     ) {
-
-        MyMentorGrid(
-            users = users,
-            modifier = Modifier.fillMaxSize()
-        )
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = Color.White)
+        ) {
+            Text(
+                text = stringResource(id = R.string.button_my_mentor),
+                style = MaterialTheme.typography.h5,
+                modifier = Modifier.padding(10.dp)
+            )
+            MyPeopleGrid(
+                users = users
+            )
+        }
     }
 }
 
@@ -254,15 +321,58 @@ fun MyMenteeDialog(
     properties: DialogProperties = DialogProperties(),
     users: List<User>
 ) {
-
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = properties
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = Color.White)
+        ) {
+            Text(
+                text = stringResource(id = R.string.button_my_mentee),
+                style = MaterialTheme.typography.h5,
+                modifier = Modifier.padding(10.dp)
+            )
+            MyPeopleGrid(
+                users = users
+            )
+        }
+    }
 }
 
+@Composable
 fun MyHistoryDialog(
     onDismissRequest: () -> Unit,
     properties: DialogProperties = DialogProperties(),
     bulletins: List<Bulletin>
 ) {
-
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = properties
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = Color.White)
+        ) {
+            Text(
+                text = stringResource(id = R.string.button_my_document),
+                style = MaterialTheme.typography.h5,
+                modifier = Modifier.padding(10.dp)
+            )
+            MyHistoryGrid(bulletins = bulletins)
+        }
+    }
 }
 
 @Preview(showBackground = true)
