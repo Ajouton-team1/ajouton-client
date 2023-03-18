@@ -21,6 +21,11 @@ interface TorTeeApiService {
         @Body signUpParams: UserSignUpRequest
     ): UserSignUpResponse
 
+    @POST("member/searchMentor")
+    suspend fun searchMentor(
+        @Body searchMentorParams: GetUserRequest
+    ): GetUserResponse?
+    
     @GET("/posting/all")
     suspend fun getMentiList(
     ): List<menti>

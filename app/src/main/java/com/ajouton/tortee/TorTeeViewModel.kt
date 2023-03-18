@@ -1,11 +1,13 @@
 package com.ajouton.tortee
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajouton.tortee.data.BoardDataProvider
 import com.ajouton.tortee.model.Bulletin
 import com.ajouton.tortee.data.ViewType
+import com.ajouton.tortee.model.User
 import com.ajouton.tortee.network.*
 import com.ajouton.tortee.ui.state.TorteeUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +18,7 @@ import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.util.*
 
 class TorTeeViewModel() : ViewModel() {
 
@@ -48,11 +51,18 @@ class TorTeeViewModel() : ViewModel() {
     private val _userSignInResponse = MutableStateFlow(UserSignInResponse(false, 0))
     private val _isSignedIn = MutableStateFlow(false)
 
+    // search mentor
+    private val _searchMentorResponse = MutableStateFlow<GetUserResponse?>(null)
+    private val _mentorList = MutableStateFlow<List<User>?>(null)
+
     // bulletin
     private val _isBulletinContentShowing = MutableStateFlow(false)
     private val _isBulletinWriterShowing = MutableStateFlow(false)
+    private val _bulletinRespose = MutableStateFlow<List<menti>?>(null)
+
     private val _selectedBulletin = MutableStateFlow(Bulletin("", "", ""))
-    private val _bullentinList = MutableStateFlow(null)
+    private val _bullentinList = MutableStateFlow<List<Bulletin>?>(null)
+    private val _selectedBulletin = MutableStateFlow(Bulletin())
 
 
     val uiState: StateFlow<TorteeUIState> = _uiState
@@ -73,17 +83,26 @@ class TorTeeViewModel() : ViewModel() {
     val userSignInResponse: StateFlow<UserSignInResponse> = _userSignInResponse
     val isSignedIn: StateFlow<Boolean> = _isSignedIn
 
+    // search mentor
+    val searchMentorResponse: StateFlow<GetUserResponse?> = _searchMentorResponse
+    val mentorList: StateFlow<List<User>?> = _mentorList
+
     // bulletin
+    val bulletinListRespose : StateFlow<List<menti>?> = _bulletinRespose
     val isBulletinContentShowing: StateFlow<Boolean> = _isBulletinContentShowing
     val isBulletinWriterShowing: StateFlow<Boolean> = _isBulletinWriterShowing
     val selectedBulletin: StateFlow<Bulletin> = _selectedBulletin
-    val bulletinList : MutableStateFlow<List<menti>> = _bullentinList
+    val bulletinList : StateFlow<List<Bulletin>?> = _bullentinList
     fun updateCurrentView(viewType: ViewType) {
         _uiState.update {
             it.copy(
                 currentViewType = viewType
             )
         }
+    }
+
+    fun getMentorList(): List<User>? {
+        return mentorList.value
     }
 
     fun updateSignUpEmail(input: String) {
@@ -130,30 +149,72 @@ class TorTeeViewModel() : ViewModel() {
         }
         if(visibility) {
             _selectedBulletin.update {
-                bulletin ?: Bulletin("empty", "empty", "empty")
+                bulletin ?: Bulletin()
             }
         }
     }
 
-    fun getUsers() {
+    @SuppressLint("SuspiciousIndentation")
+    fun searchMentor(tag: String) {
+        Log.e("", tag)
+        Log.e("", listOf(tag).toString())
+        val searchMentorRequest = GetUserRequest(listOf(tag))
+        viewModelScope.launch {
+            _searchMentorResponse.update {
+                try {
+                    Log.e("searchMentor", "Success")
+                    retrofitService.searchMentor(searchMentorRequest)
+                } catch(e: IOException) {
+                    e.printStackTrace()
+                    Log.e("searchMentor","IOException")
+                    null
+                } catch(e: HttpException) {
+                    Log.e("searchMentor","HttpException")
+                    null
+                }
+            }
+            _mentorList.update { listOf() }
+            var list: ArrayList<User> = arrayListOf()
+                    Log.e("", searchMentorResponse.value.toString())
+            for(mentor in searchMentorResponse.value?.members!!) {
+                var taglist: ArrayList<String> = arrayListOf()
+                for(memberTag in mentor.memberTags) {
+                    taglist.add(memberTag.tag.name)
+                }
+                list.add(User(mentor.email, mentor.description, mentor.name, mentor.nickname, taglist))
+            }
+            _mentorList.update {
+                list
+            }
+        }
 
     }
 
 
     fun getMenteeList() {
         viewModelScope.launch {
-            _bullentinList.update {
+            _bulletinRespose.update {
             try {
                 Log.e("mentee", "Success")
                 retrofitService.getMentiList()
             } catch (e: IOException) {
                 e.printStackTrace()
                 Log.e("mentee", "IOException")
+                null
             } catch (e: HttpException) {
                 Log.e("mentee", "HttpException")
+                null
             }
         }
-    }
+            _bullentinList.update { listOf() }
+            var list: ArrayList<Bulletin> = arrayListOf()
+            for(mentor in bulletinListRespose.value!!) {
+                list.add(User(mentor.member.email,)
+            }
+
+
+
+            }
     fun signUp() {
         val userSignUpRequest = UserSignUpRequest(signUpEmail.value, signUpPassword.value, signUpName.value, signUpNickname.value, signUpDescription.value, listOf("Java", "Spring", "Flask"))
         viewModelScope.launch {
@@ -184,7 +245,7 @@ class TorTeeViewModel() : ViewModel() {
         _signUpPageVisibility.update { false }
     }
 
-    fun signIn(user: UserSignInRequest) {
+    fun signIn() {
         val userSignInRequest = UserSignInRequest(userIdInput.value, userPasswordInput.value)
         viewModelScope.launch {
             _userSignInResponse.update {

@@ -191,7 +191,7 @@ fun MenteeBulletinCard(
                     modifier = Modifier
                 ) {
                     Image(
-                        painter = painterResource(id = bulletin.writer.imageResId),
+                        painter = painterResource(id = R.drawable.user_icon),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
                     )
@@ -366,6 +366,23 @@ fun MenteeBulletinDialog(
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.user_icon),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = bulletin.writer.name,
+                            style = MaterialTheme.typography.body2,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
 

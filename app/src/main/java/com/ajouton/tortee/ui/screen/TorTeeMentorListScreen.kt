@@ -59,7 +59,8 @@ fun TorTeeMentorListScreen(
         if (isDialogVisible) {
             MentorRequestDialog(
                 onDismissRequest = { isDialogVisible = false },
-                onSubmitRequest = { /* TODO */ },
+                onSubmitRequest = { 
+                },
                 user = targetUser
             )
         }
@@ -69,7 +70,9 @@ fun TorTeeMentorListScreen(
             isSearching = isSearching,
             onSearchButtonClick = { isSearching = true },
             onCloseButtonClick = { isSearching = false },
-            onValueChange = { /* TODO */ }
+            onValueChange = { tag ->
+                viewModel.searchMentor(tag)
+            }
         )
         MentorFinderBoard(
             onClickCard = { user ->
@@ -78,7 +81,7 @@ fun TorTeeMentorListScreen(
             },
             modifier = Modifier
                 .weight(7f),
-            // userList = /* TODO userList*/
+            userList = viewModel.mentorList.collectAsState().value ?: listOf()
         )
     }
 }
@@ -161,7 +164,7 @@ fun MentorFinderCard(
                 .clickable(onClick = onClickCard)
         ) {
             Image(
-                painter = painterResource(id = user.imageResId),
+                painter = painterResource(id = R.drawable.user_icon),
                 contentDescription = null,
                 modifier = Modifier
                     .size(120.dp)
@@ -171,11 +174,6 @@ fun MentorFinderCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                Image(
-                    painter = painterResource(id = user.rankResId),
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.width(5.dp))
                 Text(
                     text = user.name,
                     style = MaterialTheme.typography.h6
@@ -244,7 +242,7 @@ fun NavigationBarAbove(
                     ),
                     modifier = Modifier.weight(9f),
                     onValueChange = {
-                        onValueChange(it.toString())
+                        onValueChange(it.text)
                         text = it
                     }
                 )
@@ -276,7 +274,7 @@ fun NavigationBarAbove(
                 Text(
                     text = stringResource(id = R.string.mentor_board),
                     style = MaterialTheme.typography.h3,
-                    modifier = Modifier.padding(6.dp,0.dp)
+                    modifier = Modifier.padding(6.dp, 0.dp)
                 )
                 IconButton(
                     onClick = onSearchButtonClick,
@@ -323,7 +321,7 @@ fun MentorRequestDialog(
                     .padding(10.dp)
             ) {
                 Image(
-                    painter = painterResource(id = user.imageResId),
+                    painter = painterResource(id = R.drawable.user_icon),
                     contentDescription = null
                 )
                 Column(
