@@ -1,7 +1,12 @@
 package com.ajouton.tortee.ui.screen
 
+import android.graphics.ColorSpace.Rgb
 import android.graphics.Paint.Align
 import android.service.autofill.OnClickAction
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,9 +17,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,8 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -39,17 +44,19 @@ import com.ajouton.tortee.ui.theme.Typography
 @Composable
 fun TorTeeMentorListScreen(
     modifier: Modifier,
-    viewModel: TorTeeViewModel
+    viewModel: TorTeeViewModel,
 ) {
     var isDialogVisible by remember { mutableStateOf(false) }
-    var targetUser by remember { mutableStateOf(User())}
+    var isSearching by remember { mutableStateOf(false) }
+    var targetUser by remember { mutableStateOf(User()) }
+
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        if(isDialogVisible) {
+        if (isDialogVisible) {
             MentorRequestDialog(
                 onDismissRequest = { isDialogVisible = false },
                 onSubmitRequest = { /* TODO */ },
@@ -58,12 +65,17 @@ fun TorTeeMentorListScreen(
         }
         NavigationBarAbove(
             modifier = Modifier
-                .weight(1f)
+                .weight(1f),
+            isSearching = isSearching,
+            onSearchButtonClick = { isSearching = true },
+            onCloseButtonClick = { isSearching = false },
+            onValueChange = { /* TODO */ }
         )
         MentorFinderBoard(
             onClickCard = { user ->
                 isDialogVisible = true
-                targetUser = user },
+                targetUser = user
+            },
             modifier = Modifier
                 .weight(7f)
         )
@@ -73,24 +85,24 @@ fun TorTeeMentorListScreen(
 @Composable
 fun MentorFinderBoard(
     onClickCard: (User) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     // test 용도
     val userList: List<User> = listOf<User>(
         User(
-            name = "testName1", technics =  listOf<String>("test1","test2", "test3")
+            name = "testName1", technics = listOf<String>("test1", "test2", "test3")
         ),
         User(
-            name = "testName1", technics =  listOf<String>("test1","test2")
+            name = "testName1", technics = listOf<String>("test1", "test2")
         ),
         User(
-            name = "testName1", technics =  listOf<String>("test1")
+            name = "testName1", technics = listOf<String>("test1")
         ),
         User(
-            name = "testName1", technics =  listOf<String>("test1")
+            name = "testName1", technics = listOf<String>("test1")
         ),
         User(
-            name = "testName1", technics =  listOf<String>("test1")
+            name = "testName1", technics = listOf<String>("test1")
         )
     )
 
@@ -99,7 +111,8 @@ fun MentorFinderBoard(
     ) {
         Text(
             text = stringResource(id = R.string.mentorlist),
-            modifier = Modifier.padding(10.dp,20.dp)
+            style = MaterialTheme.typography.h4,
+            modifier = Modifier.padding(10.dp, 20.dp)
         )
         MentorFinderGrid(users = userList, onClickCard = onClickCard)
     }
@@ -108,13 +121,13 @@ fun MentorFinderBoard(
 @Composable
 fun MentorFinderGrid(
     users: List<User>,
-    onClickCard: (User) -> Unit
+    onClickCard: (User) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 128.dp),
         modifier = Modifier.padding(top = 20.dp, start = 10.dp, end = 10.dp)
     ) {
-        items(users){ user ->
+        items(users) { user ->
             MentorFinderCard(
                 user = user,
                 onClickCard = { onClickCard(user) },
@@ -128,13 +141,13 @@ fun MentorFinderGrid(
 fun MentorFinderCard(
     user: User,
     onClickCard: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Card(
         elevation = 4.dp,
         modifier = modifier
             .width(200.dp)
-            .height(200.dp)
+            .height(230.dp)
             .padding(8.dp),
         shape = RoundedCornerShape(24.dp)
     ) {
@@ -151,13 +164,18 @@ fun MentorFinderCard(
                     .padding(10.dp)
             )
             Row(
-
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Image(
                     painter = painterResource(id = user.rankResId),
                     contentDescription = null
                 )
-                Text(text = user.name)
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = user.name,
+                    style = MaterialTheme.typography.h6
+                )
             }
             TechnicListColumn(technics = user.technics)
         }
@@ -166,11 +184,14 @@ fun MentorFinderCard(
 
 @Composable
 fun TechnicListColumn(
-    technics: List<String>
+    technics: List<String>,
 ) {
     LazyColumn {
-        items(technics) { technic ->
-            Text(text = technic)
+        items(technics.take(2)) { technic ->
+            Text(
+                text = technic,
+                style = MaterialTheme.typography.body2
+            )
         }
     }
 }
@@ -178,8 +199,13 @@ fun TechnicListColumn(
 @Composable
 fun NavigationBarAbove(
     modifier: Modifier = Modifier,
-    onSearchButtonClick: ()->Unit = { }
+    isSearching: Boolean,
+    onSearchButtonClick: () -> Unit,
+    onCloseButtonClick: () -> Unit,
+    onValueChange: (String) -> Unit,
 ) {
+    var text by remember { mutableStateOf(TextFieldValue()) }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -188,7 +214,7 @@ fun NavigationBarAbove(
     ) {
         Text(
             text = stringResource(id = R.string.app_name),
-            fontSize = 32.sp,
+            style = MaterialTheme.typography.h3,
             modifier = Modifier.padding(6.dp)
         )
         Row(
@@ -196,18 +222,66 @@ fun NavigationBarAbove(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.wrapContentSize()
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = null,
-                modifier = Modifier.size(48.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.baseline_search_24),
-                contentDescription = stringResource(id = R.string.search_description),
-                modifier = Modifier
-                    .size(36.dp)
-                    .clickable(onClick = onSearchButtonClick)
-            )
+            AnimatedVisibility(
+                visible = isSearching,
+                enter = slideInHorizontally(initialOffsetX = { it }),
+                exit = slideOutHorizontally(targetOffsetX = { it }),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .clip(shape = RoundedCornerShape(12.dp))
+                        .background(Color(R.color.search_bar))
+                ) {
+                    TextField(
+                        value = text,
+                        singleLine = true,
+                        shape = RectangleShape,
+                        colors = TextFieldDefaults.textFieldColors(
+                            textColor = Color.Black,
+                            cursorColor = Color.Black,
+                            backgroundColor = Color.Unspecified,
+                            focusedIndicatorColor = Color.Unspecified,
+                            unfocusedIndicatorColor = Color.Unspecified,
+                            disabledIndicatorColor = Color.Unspecified
+                        ),
+                        modifier = Modifier.weight(1f),
+                        onValueChange = {
+                            onValueChange(it.toString())
+                            text = it
+                        }
+                    )
+                    IconButton(
+                        onClick = {
+                            onCloseButtonClick()
+                            text = TextFieldValue("")
+                        },
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_close_24),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(36.dp)
+                        )
+                    }
+                }
+            }
+            AnimatedVisibility(visible = !isSearching) {
+                IconButton(
+                    onClick = onSearchButtonClick,
+                    modifier = Modifier
+                        .size(36.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_search_24),
+                        contentDescription = stringResource(id = R.string.search_description),
+                        modifier = Modifier
+                            .size(36.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -217,7 +291,7 @@ fun MentorRequestDialog(
     onDismissRequest: () -> Unit,
     onSubmitRequest: () -> Unit,
     properties: DialogProperties = DialogProperties(),
-    user: User
+    user: User,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -248,9 +322,13 @@ fun MentorRequestDialog(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = user.name
+                        text = user.name,
+                        style = MaterialTheme.typography.h5
                     )
-                    Text(text = user.email)
+                    Text(
+                        text = user.email,
+                        style = MaterialTheme.typography.body1
+                    )
                 }
             }
             Box(
@@ -288,7 +366,7 @@ fun MentorRequestDialog(
             Row(modifier = Modifier.padding(10.dp)) {
                 Text(
                     text = stringResource(id = R.string.button_cancle),
-                    fontSize = 30.sp,
+                    style = MaterialTheme.typography.button,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1f)
@@ -299,7 +377,7 @@ fun MentorRequestDialog(
                 )
                 Text(
                     text = stringResource(id = R.string.button_submit),
-                    fontSize = 30.sp,
+                    style = MaterialTheme.typography.button,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1f)
