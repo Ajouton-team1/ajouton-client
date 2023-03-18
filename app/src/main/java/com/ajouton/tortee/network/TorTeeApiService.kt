@@ -1,6 +1,7 @@
 package com.ajouton.tortee.network
 
 import com.ajouton.tortee.model.User
+import retrofit2.Call
 import retrofit2.http.*
 
 interface TorTeeApiService {
@@ -14,10 +15,16 @@ interface TorTeeApiService {
         @Body signInParams: UserSignInRequest
     ): UserSignInResponse
 
-    @GET("/recipes/search")
-    fun get_Search(
-        @Query("keyword") keyword : String?,
-        @Header("x-access-token") token: String?
-    ): Call<Search_Response>
+    @GET("/posting/all")
+    suspend fun getMentiList(
+    ): MentiBulletinResponse
+
+    @GET("/posting")
+    fun getOneMenti(
+        @Query("postingId") postingId : Int?,
+    ): MentiDetailResponse
+
+
+
 
 }
