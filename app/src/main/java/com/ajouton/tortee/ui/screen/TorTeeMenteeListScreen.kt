@@ -103,7 +103,6 @@ fun TorTeeMenteeListScreen(
             },
             modifier = Modifier
                 .weight(7f),
-
             bulletins = viewModel.bulletinList.collectAsState().value ?: listOf()
         )
     }
