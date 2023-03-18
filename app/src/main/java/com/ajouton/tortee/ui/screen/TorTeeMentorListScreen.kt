@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,6 +34,7 @@ import com.ajouton.tortee.model.User
 import com.ajouton.tortee.ui.theme.TorTeeTheme
 import com.ajouton.tortee.R
 import com.ajouton.tortee.TorTeeViewModel
+import com.ajouton.tortee.ui.theme.Typography
 
 @Composable
 fun TorTeeMentorListScreen(
@@ -63,7 +65,6 @@ fun TorTeeMentorListScreen(
                 isDialogVisible = true
                 targetUser = user },
             modifier = Modifier
-                .padding(20.dp)
                 .weight(7f)
         )
     }
@@ -110,7 +111,8 @@ fun MentorFinderGrid(
     onClickCard: (User) -> Unit
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp)
+        columns = GridCells.Adaptive(minSize = 128.dp),
+        modifier = Modifier.padding(top = 20.dp, start = 10.dp, end = 10.dp)
     ) {
         items(users){ user ->
             MentorFinderCard(
@@ -226,7 +228,7 @@ fun MentorRequestDialog(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.9f)
+                .wrapContentHeight()
                 .clip(RoundedCornerShape(12.dp))
                 .background(color = Color.White)
         ) {
@@ -253,17 +255,33 @@ fun MentorRequestDialog(
             }
             Box(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(10.dp)
+                    .clip(RoundedCornerShape(12.dp))
                     .background(Color.LightGray)
             ) {
-                Text(text = user.info)
+                Text(
+                    text = user.info,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(10.dp)
+                )
             }
             Box(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(10.dp)
+                    .clip(RoundedCornerShape(12.dp))
                     .background(Color.LightGray)
             ) {
                 LazyColumn {
                     items(user.technics) { technic ->
-                        Text(text = technic)
+                        Text(
+                            text = technic,
+                            style = MaterialTheme.typography.body1,
+                            modifier = Modifier.padding(10.dp)
+                        )
                     }
                 }
             }
@@ -273,20 +291,22 @@ fun MentorRequestDialog(
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .clickable { onDismissRequest }
                         .weight(1f)
-                        .background(Color.LightGray)
+                        .padding(10.dp)
                         .clip(RoundedCornerShape(12.dp))
+                        .background(Color.LightGray)
+                        .clickable(onClick = onDismissRequest)
                 )
                 Text(
                     text = stringResource(id = R.string.button_submit),
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .clickable { onSubmitRequest }
                         .weight(1f)
-                        .background(Color.LightGray)
+                        .padding(10.dp)
                         .clip(RoundedCornerShape(12.dp))
+                        .background(Color.LightGray)
+                        .clickable(onClick = onSubmitRequest)
                 )
             }
         }
