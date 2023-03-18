@@ -1,5 +1,7 @@
 package com.ajouton.tortee.data
 
+import com.ajouton.tortee.model.Bulletin
+
 object BoardDataProvider {
     val bulletinList = listOf(
         Bulletin("Writer1", "Title1", "Content1"),

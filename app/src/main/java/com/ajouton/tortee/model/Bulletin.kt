@@ -1,4 +1,4 @@
-package com.ajouton.tortee.data
+package com.ajouton.tortee.model
 
 data class Bulletin (
     val writer: String,
