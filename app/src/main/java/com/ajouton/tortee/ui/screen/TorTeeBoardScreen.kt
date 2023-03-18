@@ -28,6 +28,9 @@ import androidx.compose.ui.window.DialogProperties
 import com.ajouton.tortee.R
 import com.ajouton.tortee.TorTeeViewModel
 import com.ajouton.tortee.model.Bulletin
+import com.ajouton.tortee.model.User
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun TorTeeBoardScreen(
@@ -40,6 +43,13 @@ fun TorTeeBoardScreen(
     Column(
         modifier = modifier
     ) {
+        if (isMakeDialogVisible) {
+            DocBulletinMakeDialog(
+                onDismissRequest = { isMakeDialogVisible = false },
+                onSubmitRequest = { /*TODO*/ },
+                user = User() // 사용자로 변경 필요
+            )
+        }
         BulletinBoardTopBar(
             modifier = Modifier
                 .weight(1f),
@@ -48,6 +58,31 @@ fun TorTeeBoardScreen(
             onCloseButtonClick = { isSearching = false },
             onValueChange = { /*TODO Search title*/}
         )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            androidx.compose.material3.ExtendedFloatingActionButton(
+                onClick = { isMakeDialogVisible = true },
+                contentColor = Color.White,
+                modifier = Modifier
+                    .width(160.dp)
+                    .padding(10.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_add_24),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.padding(5.dp))
+                Text(
+                    text = "New",
+                    style = MaterialTheme.typography.h5
+                )
+            }
+        }
         BulletinBoardContent(
             modifier = Modifier
                 .weight(7f),
@@ -249,6 +284,117 @@ fun BulletinBoardListItem(
                 modifier = Modifier
                     .padding(start = 5.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun DocBulletinMakeDialog(
+    onDismissRequest: () -> Unit,
+    onSubmitRequest: () -> Unit,
+    user: User,
+    properties: DialogProperties = DialogProperties(),
+) {
+    val time = Calendar.getInstance().time
+    val formatter = SimpleDateFormat("yyyy.MM.dd")
+    val current = formatter.format(time)
+
+    var title: String by remember { mutableStateOf("") }
+    var content: String by remember { mutableStateOf("") }
+
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = properties
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(.7f)
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = Color.White)
+                .padding(10.dp)
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+
+                TextField(
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.placeholder_title),
+                            style = MaterialTheme.typography.h4
+                        )
+                    },
+                    value = title,
+                    onValueChange = {
+                        title = it
+                    },
+                    shape = RectangleShape,
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = Color.Black,
+                        cursorColor = Color.Black,
+                        backgroundColor = Color.Unspecified,
+                        focusedIndicatorColor = Color.Unspecified,
+                        unfocusedIndicatorColor = Color.Unspecified,
+                        disabledIndicatorColor = Color.Unspecified
+                    ),
+                    textStyle = MaterialTheme.typography.h4
+                )
+                TextField(
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.placeholder_body),
+                            style = MaterialTheme.typography.body1
+                        )
+                    },
+                    value = content,
+                    onValueChange = {
+                        content = it
+                    },
+                    shape = RectangleShape,
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = Color.Black,
+                        cursorColor = Color.Black,
+                        backgroundColor = Color.Unspecified,
+                        focusedIndicatorColor = Color.Unspecified,
+                        unfocusedIndicatorColor = Color.Unspecified,
+                        disabledIndicatorColor = Color.Unspecified
+                    ),
+                    textStyle = MaterialTheme.typography.body1,
+                    modifier = Modifier
+                        .padding(start = 5.dp)
+                )
+            }
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Button(
+                    onClick = onDismissRequest,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.button_cancel),
+                        style = MaterialTheme.typography.button
+                    )
+                }
+                Button(
+                    onClick = onSubmitRequest,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.button_make),
+                        style = MaterialTheme.typography.button
+                    )
+                }
+            }
         }
     }
 }
