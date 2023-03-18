@@ -31,7 +31,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ajouton.tortee.R
 import com.ajouton.tortee.TorTeeViewModel
-import com.ajouton.tortee.data.Bulletin
 import com.ajouton.tortee.model.MenteeBulletin
 import com.ajouton.tortee.model.User
 import com.ajouton.tortee.ui.theme.TorTeeTheme
