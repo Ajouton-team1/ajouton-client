@@ -296,7 +296,7 @@ fun NavigationBarAbove(
 @Composable
 fun MentorRequestDialog(
     onDismissRequest: () -> Unit,
-    onSubmitRequest: () -> Unit,
+    onSubmitRequest: (User) -> Unit,
     properties: DialogProperties = DialogProperties(),
     user: User,
 ) {
@@ -388,7 +388,7 @@ fun MentorRequestDialog(
                     )
                 }
                 Button(
-                    onClick = onSubmitRequest,
+                    onClick = {onSubmitRequest(user)},
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
