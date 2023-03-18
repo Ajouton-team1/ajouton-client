@@ -30,7 +30,6 @@ class MentiFragment : Fragment() {
         binding.mentiRv.adapter = MentiAdapter(activity as MainActivity, mentithumlist)
 
 
-
         return binding.root
 
     }
