@@ -60,7 +60,7 @@ fun TorTeeMentorListScreen(
             MentorRequestDialog(
                 onDismissRequest = { isDialogVisible = false },
                 onSubmitRequest = { targetUser ->
-                    viewModel.makeMatching(false, targetUser.)
+                    viewModel.makeMatching(false, targetUser.id)
                 },
                 user = targetUser
             )

@@ -208,7 +208,7 @@ class TorTeeViewModel() : ViewModel() {
                 for(memberTag in mentor.memberTags) {
                     taglist.add(memberTag.tag.name)
                 }
-                list.add(User(mentor.email, mentor.description, mentor.name, mentor.nickname, taglist))
+                list.add(User(mentor.memberId, mentor.email, mentor.description, mentor.name, mentor.nickname, taglist))
             }
             _mentorList.update {
                 list
