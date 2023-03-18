@@ -1,16 +1,13 @@
 package com.ajouton.tortee
 
 import android.os.Bundle
-import android.view.View.inflate
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -19,15 +16,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ajouton.tortee.data.ViewType
-import com.ajouton.tortee.databinding.ActivityTestBinding
-import com.ajouton.tortee.ui.TorTeeBoardScreen
-import com.ajouton.tortee.ui.TorTeeMenteeListScreen
-import com.ajouton.tortee.ui.TorTeeMentorListScreen
-import com.ajouton.tortee.ui.TorTeeMyPageScreen
+import com.ajouton.tortee.ui.screen.TorTeeBoardScreen
+import com.ajouton.tortee.ui.screen.TorTeeMenteeListScreen
+import com.ajouton.tortee.ui.screen.TorTeeMentorListScreen
+import com.ajouton.tortee.ui.screen.TorTeeMyPageScreen
 import com.ajouton.tortee.ui.state.TorteeUIState
 import com.ajouton.tortee.ui.theme.TorTeeTheme
 
