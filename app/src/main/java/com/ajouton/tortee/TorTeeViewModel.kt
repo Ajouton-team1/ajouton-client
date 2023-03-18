@@ -52,6 +52,7 @@ class TorTeeViewModel() : ViewModel() {
     private val _isBulletinContentShowing = MutableStateFlow(false)
     private val _isBulletinWriterShowing = MutableStateFlow(false)
     private val _selectedBulletin = MutableStateFlow(Bulletin("", "", ""))
+    private val _bullentinList = MutableStateFlow(null)
 
 
     val uiState: StateFlow<TorteeUIState> = _uiState
@@ -76,7 +77,7 @@ class TorTeeViewModel() : ViewModel() {
     val isBulletinContentShowing: StateFlow<Boolean> = _isBulletinContentShowing
     val isBulletinWriterShowing: StateFlow<Boolean> = _isBulletinWriterShowing
     val selectedBulletin: StateFlow<Bulletin> = _selectedBulletin
-
+    val bulletinList : MutableStateFlow<List<menti>> = _bullentinList
     fun updateCurrentView(viewType: ViewType) {
         _uiState.update {
             it.copy(
@@ -138,20 +139,21 @@ class TorTeeViewModel() : ViewModel() {
 
     }
 
-<<<<<<< HEAD
+
     fun getMenteeList() {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            _bullentinList.update {
             try {
                 Log.e("mentee", "Success")
-                    retrofitService.getMentiList()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    Log.e("mentee", "IOException")
-                    UserSignInResponse(false, 0)
-                } catch (e: HttpException) {
-                    Log.e("mentee", "HttpException")
-                    UserSignInResponse(false, 0)
-=======
+                retrofitService.getMentiList()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Log.e("mentee", "IOException")
+            } catch (e: HttpException) {
+                Log.e("mentee", "HttpException")
+            }
+        }
+    }
     fun signUp() {
         val userSignUpRequest = UserSignUpRequest(signUpEmail.value, signUpPassword.value, signUpName.value, signUpNickname.value, signUpDescription.value, listOf("Java", "Spring", "Flask"))
         viewModelScope.launch {
@@ -174,19 +176,13 @@ class TorTeeViewModel() : ViewModel() {
             }
             if(userSignUpResponseValue.value == 0) {
                 _signUpPageVisibility.update { false }
->>>>>>> 6679f7c4a06f32f3a9d893b59eb06e391cbce321
             }
         }
     }
 
-<<<<<<< HEAD
-
-
-=======
     fun hideSignUpPage() {
         _signUpPageVisibility.update { false }
     }
->>>>>>> 6679f7c4a06f32f3a9d893b59eb06e391cbce321
 
     fun signIn(user: UserSignInRequest) {
         val userSignInRequest = UserSignInRequest(userIdInput.value, userPasswordInput.value)
