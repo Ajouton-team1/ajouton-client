@@ -213,9 +213,10 @@ class TorTeeViewModel() : ViewModel() {
                 for (memberTag in mentor.memberTags) {
                     taglist.add(memberTag.tag.name)
                 }
-<<<<<<< HEAD
                 list.add(
                     User(
+
+                        mentor.memberId,
                         mentor.email,
                         mentor.description,
                         mentor.name,
@@ -223,9 +224,8 @@ class TorTeeViewModel() : ViewModel() {
                         taglist
                     )
                 )
-=======
+
                 list.add(User(mentor.memberId, mentor.email, mentor.description, mentor.name, mentor.nickname, taglist))
->>>>>>> 071329c530f80ad8c29ea307169876d796ccfefd
             }
 
         }
