@@ -34,12 +34,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val viewModel: TorTeeViewModel = viewModel()
-                    if(!viewModel.signUpPageVisibility.collectAsState().value) {
+                    if(viewModel.signUpPageVisibility.collectAsState().value) {
                         SignUpScreen(
                             viewModel = viewModel
                         )
                     }
-                    if(!viewModel.isSignedIn.collectAsState().value) {
+                    else if(!viewModel.isSignedIn.collectAsState().value) {
                         SignInScreen(
                             viewModel = viewModel
                         )
