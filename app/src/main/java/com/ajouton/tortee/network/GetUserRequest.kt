@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetUserRequest (
-    val tags: List<String>
+    val tags: List<String>,
+    val memberId: Int
 )
