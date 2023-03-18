@@ -63,6 +63,9 @@ class TorTeeViewModel() : ViewModel() {
     private val _isBulletinWriterShowing = MutableStateFlow(false)
     private val _selectedBulletin = MutableStateFlow(Bulletin())
 
+    // write mentee posting
+    private val _writeMenteePostingResponse = MutableStateFlow(WriteMenteePostingResponse(false))
+
 
     val uiState: StateFlow<TorteeUIState> = _uiState
     val userInfo: StateFlow<User> = _userInfo
@@ -92,6 +95,9 @@ class TorTeeViewModel() : ViewModel() {
     val isBulletinContentShowing: StateFlow<Boolean> = _isBulletinContentShowing
     val isBulletinWriterShowing: StateFlow<Boolean> = _isBulletinWriterShowing
     val selectedBulletin: StateFlow<Bulletin> = _selectedBulletin
+
+    // write mentee posting
+    val writeMenteePostingResponse: StateFlow<WriteMenteePostingResponse> = _writeMenteePostingResponse
 
     fun updateCurrentView(viewType: ViewType) {
         _uiState.update {
@@ -200,6 +206,22 @@ class TorTeeViewModel() : ViewModel() {
     fun autoLogin() {
         _isSignedIn.update {
             true
+        }
+    }
+
+    fun writeMenteePosting(title: String, content: String, memberId: Int) {
+        val writeMenteePostingRequest = WriteMenteePostingRequest(title, content, memberId, listOf("java", "spring", "flask"))
+        viewModelScope.launch {
+            _writeMenteePostingResponse.update {
+                try {
+                    retrofitService.writeMenteePosting(writeMenteePostingRequest)
+                } catch(e: IOException) {
+                    e.printStackTrace()
+                    WriteMenteePostingResponse(false)
+                } catch(e: HttpException) {
+                    WriteMenteePostingResponse(false)
+                }
+            }
         }
     }
 

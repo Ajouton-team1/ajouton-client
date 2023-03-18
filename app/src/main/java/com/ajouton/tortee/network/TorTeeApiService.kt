@@ -55,8 +55,13 @@ interface TorTeeApiService {
 //        @Body writeMenteePostingParams: WriteMenteePostingRequest
 //    ): WriteMenteePostingResponse
 //
-//    @GET("/member/myInfo")
+    @GET("/member/myInfo")
     suspend fun getMyInfo(
         @Query("") getMyInfoParams: GetMyInfoRequest
     ): GetMyInfoResponse?
+
+    @POST("/posting")
+    suspend fun writeMenteePosting(
+        @Body writeMenteePostingParams: WriteMenteePostingRequest
+    ): WriteMenteePostingResponse
 }
