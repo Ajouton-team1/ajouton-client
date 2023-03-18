@@ -91,7 +91,7 @@ class TorTeeViewModel() : ViewModel() {
     val bulletinListRespose : StateFlow<List<menti>?> = _bulletinRespose
     val isBulletinContentShowing: StateFlow<Boolean> = _isBulletinContentShowing
     val isBulletinWriterShowing: StateFlow<Boolean> = _isBulletinWriterShowing
-    val selectedBulletin: StateFlow<Bulletin> = _selectedBulletin
+    //val selectedBulletin: StateFlow<Bulletin> = _selectedBulletin
     val bulletinList : StateFlow<List<Bulletin>?> = _bullentinList
     fun updateCurrentView(viewType: ViewType) {
         _uiState.update {
@@ -148,9 +148,9 @@ class TorTeeViewModel() : ViewModel() {
             visibility
         }
         if(visibility) {
-            _selectedBulletin.update {
-                bulletin ?: Bulletin()
-            }
+         //   _selectedBulletin.update {
+           //     bulletin ?: Bulletin()
+            //}
         }
     }
 
@@ -209,7 +209,7 @@ class TorTeeViewModel() : ViewModel() {
             _bullentinList.update { listOf() }
             var list: ArrayList<Bulletin> = arrayListOf()
             for(mentor in bulletinListRespose.value!!) {
-                list.add(User(mentor.member.email,)
+               // list.add(User(mentor.member.email,)
             }
 
 
