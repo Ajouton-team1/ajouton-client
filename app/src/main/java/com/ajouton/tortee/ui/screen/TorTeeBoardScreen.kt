@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -118,7 +119,7 @@ fun BulletinBoardTopBar(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .background(Color(R.color.search_bar))
+                    .background(color = Color(0xFFF0E9D2))
                     .padding(10.dp, 0.dp)
             ) {
                 TextField(
