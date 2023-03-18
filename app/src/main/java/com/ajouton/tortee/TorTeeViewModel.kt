@@ -197,6 +197,12 @@ class TorTeeViewModel() : ViewModel() {
 //        }
 //    }
 
+    fun autoLogin() {
+        _isSignedIn.update {
+            true
+        }
+    }
+
     @SuppressLint("SuspiciousIndentation")
     fun searchMentor(tag: String) {
         Log.e("", tag)
