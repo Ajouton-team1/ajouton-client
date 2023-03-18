@@ -1,4 +1,4 @@
-package com.ajouton.tortee.Menti
+package com.ajouton.tortee.menti
 
 import android.os.Bundle
 import android.view.LayoutInflater

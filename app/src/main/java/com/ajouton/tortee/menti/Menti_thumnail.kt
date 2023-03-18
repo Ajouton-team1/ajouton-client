@@ -1,4 +1,4 @@
-package com.ajouton.tortee.Menti
+package com.ajouton.tortee.menti
 
 data class Menti_thumnail(
     val name: String,
