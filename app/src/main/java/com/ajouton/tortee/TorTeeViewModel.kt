@@ -93,6 +93,25 @@ class TorTeeViewModel() : ViewModel() {
 
     }
 
+    fun getMenteeList() {
+            viewModelScope.launch {
+            try {
+                Log.e("mentee", "Success")
+                    retrofitService.getMentiList()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    Log.e("mentee", "IOException")
+                    UserSignInResponse(false, 0)
+                } catch (e: HttpException) {
+                    Log.e("mentee", "HttpException")
+                    UserSignInResponse(false, 0)
+            }
+        }
+    }
+
+
+
+
     fun signIn(user: UserSignInRequest) {
         val userSignInRequest = UserSignInRequest(userIdInput.value, userPasswordInput.value)
         viewModelScope.launch {

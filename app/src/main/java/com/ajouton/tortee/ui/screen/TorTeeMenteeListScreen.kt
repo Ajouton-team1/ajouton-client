@@ -47,6 +47,9 @@ fun TorTeeMenteeListScreen(
     var isDialogVisible by remember { mutableStateOf(false) }
     var isSearching by remember { mutableStateOf(false) }
     var targetBulletin by remember { mutableStateOf(MenteeBulletin()) }
+    viewModel.getMenteeList()
+
+    
 
     Column(
         modifier = modifier
@@ -105,7 +108,9 @@ fun TorTeeMenteeListScreen(
                 targetBulletin = bulletin
             },
             modifier = Modifier
-                .weight(7f)
+                .weight(7f),
+            
+
         )
     }
 }
