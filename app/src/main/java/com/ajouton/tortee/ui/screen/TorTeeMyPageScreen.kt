@@ -57,9 +57,17 @@ fun TorTeeMyPageScreen(
                     painter = painterResource(id = user.imageResId),
                     contentDescription = null
                 )
+                Spacer(modifier = Modifier.padding(10.dp))
                 Column() {
-                    Text(text = (user.name + stringResource(id = R.string.greeting)))
-                    Text(text = user.email)
+                    Text(
+                        text = (user.name + stringResource(id = R.string.greeting)),
+                        style = MaterialTheme.typography.h5
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = user.email,
+                        style = MaterialTheme.typography.body1
+                    )
                 }
             }
             Card() {
