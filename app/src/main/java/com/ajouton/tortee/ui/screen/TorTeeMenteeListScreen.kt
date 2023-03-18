@@ -45,8 +45,6 @@ fun TorTeeMenteeListScreen(
     var targetBulletin by remember { mutableStateOf(MenteeBulletin()) }
     viewModel.getMenteeList()
 
-    
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -106,7 +104,7 @@ fun TorTeeMenteeListScreen(
             modifier = Modifier
                 .weight(7f),
 
-
+            bulletins = viewModel.bulletinList.collectAsState().value ?: listOf()
         )
     }
 }
@@ -119,11 +117,11 @@ fun MenteeBoard(
     bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>()
 ) {
     // test 용도
-    val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
-        MenteeBulletin(writer = User(name = "Test1")),
-        MenteeBulletin(writer = User(name = "Test2")),
-        MenteeBulletin(writer = User(name = "Test3"))
-    )
+  //  val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
+    //    MenteeBulletin(writer = User(name = "Test1")),
+    //    MenteeBulletin(writer = User(name = "Test2")),
+  //      MenteeBulletin(writer = User(name = "Test3"))
+  //  )
 
     Column(
         modifier = modifier.fillMaxSize()
@@ -191,11 +189,7 @@ fun MenteeBulletinCard(
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = bulletin.tag,
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center
-                    )
+
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -209,7 +203,7 @@ fun MenteeBulletinCard(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = bulletin.writer.name,
+                        text = bulletin.writer,
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )
@@ -367,11 +361,7 @@ fun MenteeBulletinDialog(
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = bulletin.tag,
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center
-                    )
+
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -385,7 +375,7 @@ fun MenteeBulletinDialog(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = bulletin.writer.name,
+                        text = bulletin.writer,
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.ajouton.tortee.data.BoardDataProvider
 import com.ajouton.tortee.model.Bulletin
 import com.ajouton.tortee.data.ViewType
+import com.ajouton.tortee.model.MenteeBulletin
 import com.ajouton.tortee.model.User
 import com.ajouton.tortee.network.*
 import com.ajouton.tortee.ui.state.TorteeUIState
@@ -61,8 +62,7 @@ class TorTeeViewModel() : ViewModel() {
     private val _bulletinRespose = MutableStateFlow<List<menti>?>(null)
 
     private val _selectedBulletin = MutableStateFlow(Bulletin("", "", ""))
-    private val _bullentinList = MutableStateFlow<List<Bulletin>?>(null)
-    private val _selectedBulletin = MutableStateFlow(Bulletin())
+    private val _bullentinList = MutableStateFlow<List<MenteeBulletin>?>(null)
 
 
     val uiState: StateFlow<TorteeUIState> = _uiState
@@ -88,11 +88,12 @@ class TorTeeViewModel() : ViewModel() {
     val mentorList: StateFlow<List<User>?> = _mentorList
 
     // bulletin
-    val bulletinListRespose : StateFlow<List<menti>?> = _bulletinRespose
+    val bulletinListRespose: StateFlow<List<menti>?> = _bulletinRespose
     val isBulletinContentShowing: StateFlow<Boolean> = _isBulletinContentShowing
     val isBulletinWriterShowing: StateFlow<Boolean> = _isBulletinWriterShowing
-    //val selectedBulletin: StateFlow<Bulletin> = _selectedBulletin
-    val bulletinList : StateFlow<List<Bulletin>?> = _bullentinList
+
+   val selectedBulletin: StateFlow<Bulletin> = _selectedBulletin
+    val bulletinList: StateFlow<List<MenteeBulletin>?> = _bullentinList
     fun updateCurrentView(viewType: ViewType) {
         _uiState.update {
             it.copy(
@@ -126,7 +127,6 @@ class TorTeeViewModel() : ViewModel() {
     }
 
 
-
     fun updateUserIdInput(input: String) {
         _userIdInput.update { input }
     }
@@ -147,10 +147,10 @@ class TorTeeViewModel() : ViewModel() {
         _isBulletinContentShowing.update {
             visibility
         }
-        if(visibility) {
-         //   _selectedBulletin.update {
-           //     bulletin ?: Bulletin()
-            //}
+        if (visibility) {
+               _selectedBulletin.update {
+                 bulletin ?: Bulletin()
+            }
         }
     }
 
@@ -164,28 +164,34 @@ class TorTeeViewModel() : ViewModel() {
                 try {
                     Log.e("searchMentor", "Success")
                     retrofitService.searchMentor(searchMentorRequest)
-                } catch(e: IOException) {
+                } catch (e: IOException) {
                     e.printStackTrace()
-                    Log.e("searchMentor","IOException")
+                    Log.e("searchMentor", "IOException")
                     null
-                } catch(e: HttpException) {
-                    Log.e("searchMentor","HttpException")
+                } catch (e: HttpException) {
+                    Log.e("searchMentor", "HttpException")
                     null
                 }
             }
             _mentorList.update { listOf() }
             var list: ArrayList<User> = arrayListOf()
-                    Log.e("", searchMentorResponse.value.toString())
-            for(mentor in searchMentorResponse.value?.members!!) {
+            Log.e("", searchMentorResponse.value.toString())
+            for (mentor in searchMentorResponse.value?.members!!) {
                 var taglist: ArrayList<String> = arrayListOf()
-                for(memberTag in mentor.memberTags) {
+                for (memberTag in mentor.memberTags) {
                     taglist.add(memberTag.tag.name)
                 }
-                list.add(User(mentor.email, mentor.description, mentor.name, mentor.nickname, taglist))
+                list.add(
+                    User(
+                        mentor.email,
+                        mentor.description,
+                        mentor.name,
+                        mentor.nickname,
+                        taglist
+                    )
+                )
             }
-            _mentorList.update {
-                list
-            }
+
         }
 
     }
@@ -194,82 +200,99 @@ class TorTeeViewModel() : ViewModel() {
     fun getMenteeList() {
         viewModelScope.launch {
             _bulletinRespose.update {
-            try {
-                Log.e("mentee", "Success")
-                retrofitService.getMentiList()
-            } catch (e: IOException) {
-                e.printStackTrace()
-                Log.e("mentee", "IOException")
-                null
-            } catch (e: HttpException) {
-                Log.e("mentee", "HttpException")
-                null
+                try {
+                    Log.e("mentee", "Success")
+                    retrofitService.getMentiList()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    Log.e("mentee", "IOException")
+                    null
+                } catch (e: HttpException) {
+                    Log.e("mentee", "HttpException")
+                    null
+                }
             }
-        }
             _bullentinList.update { listOf() }
-            var list: ArrayList<Bulletin> = arrayListOf()
-            for(mentor in bulletinListRespose.value!!) {
-               // list.add(User(mentor.member.email,)
+            var list: ArrayList<MenteeBulletin> = arrayListOf()
+            for (mentor in bulletinListRespose.value!!) {
+                list.add(
+                    MenteeBulletin(
+                        mentor.member.name,
+                        mentor.title,
+                        mentor.createdAt,
+                        mentor.content
+                    )
+                )
+            }
+            _bullentinList.update {
+                list
             }
 
 
-
-            }
-    fun signUp() {
-        val userSignUpRequest = UserSignUpRequest(signUpEmail.value, signUpPassword.value, signUpName.value, signUpNickname.value, signUpDescription.value, listOf("Java", "Spring", "Flask"))
-        viewModelScope.launch {
-            _userSignUpResponse.update {
-                try {
-                    Log.e("signup", "Success")
-                    retrofitService.signUp(userSignUpRequest)
-                } catch(e: IOException) {
-                    e.printStackTrace()
-                    Log.e("signup","IOException")
-                    UserSignUpResponse(-1)
-                } catch(e: HttpException) {
-                    Log.e("signup","HttpException")
-                    UserSignUpResponse(-1)
-                }
-            }
-            _userSignUpResponseValue.update {
-                Log.e("", userSignUpResponse.value.result.toString())
-                userSignUpResponse.value.result
-            }
-            if(userSignUpResponseValue.value == 0) {
-                _signUpPageVisibility.update { false }
-            }
         }
     }
-
-    fun hideSignUpPage() {
-        _signUpPageVisibility.update { false }
-    }
-
-    fun signIn() {
-        val userSignInRequest = UserSignInRequest(userIdInput.value, userPasswordInput.value)
-        viewModelScope.launch {
-            _userSignInResponse.update {
-                try {
-                    Log.e("signup", "Success")
-                    retrofitService.signIn(userSignInRequest)
-                } catch(e: IOException) {
-                    e.printStackTrace()
-                    Log.e("signup","IOException")
-                    UserSignInResponse(false, 0)
-                } catch(e: HttpException) {
-                    Log.e("signup","HttpException")
-                    UserSignInResponse(false, 0)
+        fun signUp() {
+            val userSignUpRequest = UserSignUpRequest(
+                signUpEmail.value,
+                signUpPassword.value,
+                signUpName.value,
+                signUpNickname.value,
+                signUpDescription.value,
+                listOf("Java", "Spring", "Flask")
+            )
+            viewModelScope.launch {
+                _userSignUpResponse.update {
+                    try {
+                        Log.e("signup", "Success")
+                        retrofitService.signUp(userSignUpRequest)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        Log.e("signup", "IOException")
+                        UserSignUpResponse(-1)
+                    } catch (e: HttpException) {
+                        Log.e("signup", "HttpException")
+                        UserSignUpResponse(-1)
+                    }
+                }
+                _userSignUpResponseValue.update {
+                    Log.e("", userSignUpResponse.value.result.toString())
+                    userSignUpResponse.value.result
+                }
+                if (userSignUpResponseValue.value == 0) {
+                    _signUpPageVisibility.update { false }
                 }
             }
-            _isSignedIn.update {
-                Log.e("", userSignInResponse.value.result.toString())
-                Log.e("", userSignInResponse.value.id.toString())
-                userSignInResponse.value.result
+        }
+
+        fun hideSignUpPage() {
+            _signUpPageVisibility.update { false }
+        }
+
+        fun signIn() {
+            val userSignInRequest = UserSignInRequest(userIdInput.value, userPasswordInput.value)
+            viewModelScope.launch {
+                _userSignInResponse.update {
+                    try {
+                        Log.e("signup", "Success")
+                        retrofitService.signIn(userSignInRequest)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        Log.e("signup", "IOException")
+                        UserSignInResponse(false, 0)
+                    } catch (e: HttpException) {
+                        Log.e("signup", "HttpException")
+                        UserSignInResponse(false, 0)
+                    }
+                }
+                _isSignedIn.update {
+                    Log.e("", userSignInResponse.value.result.toString())
+                    Log.e("", userSignInResponse.value.id.toString())
+                    userSignInResponse.value.result
+                }
             }
         }
-    }
 
-    fun getBulletinList(): List<Bulletin> {
-        return BoardDataProvider.bulletinList
+        fun getBulletinList(): List<Bulletin> {
+            return BoardDataProvider.bulletinList
+        }
     }
-}
