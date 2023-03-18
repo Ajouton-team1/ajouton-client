@@ -371,7 +371,7 @@ fun MentorRequestDialog(
                     }
                 }
             }
-            Row(modifier = Modifier.padding(10.dp)) {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Button(
                     onClick = onDismissRequest,
                     modifier = Modifier
@@ -384,8 +384,6 @@ fun MentorRequestDialog(
                         style = MaterialTheme.typography.button,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(10.dp)
                     )
                 }
                 Button(
@@ -400,11 +398,8 @@ fun MentorRequestDialog(
                         style = MaterialTheme.typography.button,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(10.dp)
                     )
                 }
-
             }
         }
     }
