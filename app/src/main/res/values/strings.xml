@@ -18,7 +18,7 @@
 
     <string name="placeholder_title">Title</string>
     <string name="placeholder_body">Body</string>
-.
+    <string name="placeholder_tag">Tag</string>
     <string name="mypage_title">MyPage</string>
     <string name="greeting">님, 반갑습니다.</string>
     <string name="mypage_info">자기 소개</string>

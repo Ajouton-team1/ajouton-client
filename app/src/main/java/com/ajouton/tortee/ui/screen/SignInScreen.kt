@@ -1,5 +1,6 @@
 package com.ajouton.tortee.ui.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.ajouton.tortee.R
 import com.ajouton.tortee.TorTeeViewModel
 import com.ajouton.tortee.network.UserSignInRequest
 
@@ -25,7 +28,10 @@ fun SignInScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        Image(
+            painter = painterResource(id = R.drawable.kakaotalk_20230319_045252567),
+            contentDescription = null
+        )
         TextField(
             value = viewModel.userIdInput.collectAsState().value,
             onValueChange = {
