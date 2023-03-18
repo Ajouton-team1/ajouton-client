@@ -8,8 +8,8 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_submit">Submit</string>
     <string name="button_make">Make</string>
-    <string name="button_my_mentor">My Mentor</string>
-    <string name="button_my_mentee">My Mentee</string>
+    <string name="button_my_mentor">Mentor</string>
+    <string name="button_my_mentee">Mentee</string>
     <string name="button_my_document">My Doc</string>
 
     <string name="mentee_board">Mentee Board</string>

@@ -8,4 +8,5 @@ data class MenteeBulletin(
             "long long long long long long long long long long long long long long long long long long long long " +
             "long long long long long long long long long long long long long long long long long long long long " +
             "long long long long long long long long long long long long long long long long long enough",
+    var tag: String = ""
 )
