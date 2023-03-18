@@ -102,6 +102,10 @@ class TorTeeViewModel() : ViewModel() {
         }
     }
 
+    init {
+        searchMentor("")
+    }
+
     fun getMentorList(): List<User>? {
         return mentorList.value
     }
@@ -154,11 +158,39 @@ class TorTeeViewModel() : ViewModel() {
         }
     }
 
+    fun makeMatching(isMentor: Boolean, target: Int) {
+        lateinit var makeMatchingRequest: MakeMatchingRequest
+        if(isMentor) {
+            makeMatchingRequest = MakeMatchingRequest(userSignInResponse.value.id, target)
+        } else {
+            makeMatchingRequest = MakeMatchingRequest(target, userSignInResponse.value.id)
+
+        }
+        viewModelScope.launch {
+            try {
+                Log.e("searchMentor", "Success")
+                retrofitService.makeMatching(makeMatchingRequest)
+            } catch(e: IOException) {
+                e.printStackTrace()
+                Log.e("searchMentor","IOException")
+                null
+            } catch(e: HttpException) {
+                Log.e("searchMentor","HttpException")
+                null
+            }
+        }
+    }
+
     @SuppressLint("SuspiciousIndentation")
     fun searchMentor(tag: String) {
         Log.e("", tag)
         Log.e("", listOf(tag).toString())
-        val searchMentorRequest = GetUserRequest(listOf(tag))
+        lateinit var searchMentorRequest: GetUserRequest
+        if(tag == "") {
+            searchMentorRequest = GetUserRequest(listOf(), userSignInResponse.value.id)
+        } else {
+            searchMentorRequest = GetUserRequest(listOf(tag), userSignInResponse.value.id)
+        }
         viewModelScope.launch {
             _searchMentorResponse.update {
                 try {
@@ -181,6 +213,7 @@ class TorTeeViewModel() : ViewModel() {
                 for (memberTag in mentor.memberTags) {
                     taglist.add(memberTag.tag.name)
                 }
+<<<<<<< HEAD
                 list.add(
                     User(
                         mentor.email,
@@ -190,6 +223,9 @@ class TorTeeViewModel() : ViewModel() {
                         taglist
                     )
                 )
+=======
+                list.add(User(mentor.memberId, mentor.email, mentor.description, mentor.name, mentor.nickname, taglist))
+>>>>>>> 071329c530f80ad8c29ea307169876d796ccfefd
             }
 
         }

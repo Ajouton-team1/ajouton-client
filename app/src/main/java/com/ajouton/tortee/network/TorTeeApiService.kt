@@ -35,7 +35,10 @@ interface TorTeeApiService {
         @Query("postingId") postingId : Int?,
     ): MentiDetailResponse
 
-
+    @POST("/matching")
+    fun makeMatching(
+        @Body makeMatchingParams: MakeMatchingRequest
+    ): MakeMatchingResponse
 
 
 }
