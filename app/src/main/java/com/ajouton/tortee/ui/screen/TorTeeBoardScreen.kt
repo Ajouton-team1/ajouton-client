@@ -35,11 +35,11 @@ import java.util.*
 @Composable
 fun TorTeeBoardScreen(
     modifier: Modifier,
-    viewModel: TorTeeViewModel
+    viewModel: TorTeeViewModel,
 ) {
     var isSearching by remember { mutableStateOf(false) }
-    var isMakeDialogVisible by remember { mutableStateOf(false)
-    }
+    var isMakeDialogVisible by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
     ) {
@@ -56,7 +56,7 @@ fun TorTeeBoardScreen(
             isSearching = isSearching,
             onSearchButtonClick = { isSearching = true },
             onCloseButtonClick = { isSearching = false },
-            onValueChange = { /*TODO Search title*/}
+            onValueChange = { /*TODO Search title*/ }
         )
 
         Row(
@@ -190,7 +190,7 @@ fun BulletinBoardTopBar(
 @Composable
 fun BulletinBoardContent(
     modifier: Modifier,
-    viewModel: TorTeeViewModel
+    viewModel: TorTeeViewModel,
 ) {
     Box(
         modifier = modifier,
@@ -210,7 +210,7 @@ fun BulletinBoardContent(
             modifier = modifier,
             contentAlignment = Alignment.Center
         ) {
-            if(viewModel.isBulletinContentShowing.collectAsState().value) {
+            if (viewModel.isBulletinContentShowing.collectAsState().value) {
                 BulletinContentDialog(
                     modifier = modifier,
                     onDismissRequest = viewModel::setBulletinContentVisibility,
@@ -224,7 +224,7 @@ fun BulletinBoardContent(
 @Composable
 fun BulletinBoardListItem(
     bulletin: Bulletin,
-    onTouchBulletin: (Boolean, Bulletin?) -> Unit
+    onTouchBulletin: (Boolean, Bulletin?) -> Unit,
 ) {
 
     androidx.compose.material.Card(
@@ -404,7 +404,7 @@ fun BulletinContentDialog(
     modifier: Modifier,
     onDismissRequest: (Boolean, Bulletin?) -> Unit,
     bulletin: Bulletin,
-    properties: DialogProperties = DialogProperties()
+    properties: DialogProperties = DialogProperties(),
 ) {
     Dialog(
         onDismissRequest = { onDismissRequest(false, null) },

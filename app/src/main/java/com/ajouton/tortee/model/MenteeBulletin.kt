@@ -7,5 +7,6 @@ data class MenteeBulletin(
     var content: String = "Test Content maybe test content should be long long long long long long long long long " +
             "long long long long long long long long long long long long long long long long long long long long " +
             "long long long long long long long long long long long long long long long long long long long long " +
-            "long long long long long long long long long long long long long long long long long enough"
+            "long long long long long long long long long long long long long long long long long enough",
+    var tag: String = "Tag"
 )
