@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.ajouton.tortee.R
@@ -175,12 +176,23 @@ fun MenteeBulletinCard(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(
-                    text = bulletin.writeDate,
-                    style = MaterialTheme.typography.body1,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Text(
+                        text = bulletin.writeDate,
+                        style = MaterialTheme.typography.body1,
+                        color = Color.Gray,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = bulletin.tag,
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End,
@@ -340,12 +352,23 @@ fun MenteeBulletinDialog(
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp, vertical = 10.dp)
             ) {
-                Text(
-                    text = bulletin.writeDate,
-                    style = MaterialTheme.typography.body1,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Text(
+                        text = bulletin.writeDate,
+                        style = MaterialTheme.typography.body1,
+                        color = Color.Gray,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = bulletin.tag,
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End,
@@ -362,23 +385,6 @@ fun MenteeBulletinDialog(
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End,
-                        modifier = Modifier
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.user_icon),
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = bulletin.writer.name,
-                            style = MaterialTheme.typography.body2,
-                            textAlign = TextAlign.Center
-                        )
-                    }
                 }
             }
 
@@ -427,6 +433,7 @@ fun MenteeBulletinMakeDialog(
 
     var title: String by remember { mutableStateOf("") }
     var content: String by remember { mutableStateOf("") }
+    var tag: String by remember { mutableStateOf("") }
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -443,7 +450,6 @@ fun MenteeBulletinMakeDialog(
                 .padding(10.dp)
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
-
                 TextField(
                     placeholder = {
                         Text(
@@ -465,6 +471,31 @@ fun MenteeBulletinMakeDialog(
                         disabledIndicatorColor = Color.Unspecified
                     ),
                     textStyle = MaterialTheme.typography.h4
+                )
+                TextField(
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.placeholder_tag),
+                            fontSize = 14.sp
+                        )
+                    },
+                    value = tag,
+                    onValueChange = {
+                        tag = it
+                    },
+                    shape = RectangleShape,
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = Color.Black,
+                        cursorColor = Color.Black,
+                        backgroundColor = Color.Unspecified,
+                        focusedIndicatorColor = Color.Unspecified,
+                        unfocusedIndicatorColor = Color.Unspecified,
+                        disabledIndicatorColor = Color.Unspecified
+                    ),
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
                 )
                 TextField(
                     placeholder = {

@@ -389,9 +389,7 @@ fun MentorRequestDialog(
                     )
                 }
                 Button(
-                    onClick = {
-
-                              },
+                    onClick = {onSubmitRequest(user)},
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
