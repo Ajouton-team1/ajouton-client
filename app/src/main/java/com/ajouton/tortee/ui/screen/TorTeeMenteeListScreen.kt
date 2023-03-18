@@ -43,6 +43,7 @@ fun TorTeeMenteeListScreen(
     var isDialogVisible by remember { mutableStateOf(false) }
     var isSearching by remember { mutableStateOf(false) }
     var targetBulletin by remember { mutableStateOf(MenteeBulletin()) }
+    viewModel.getMenteeList()
 
     Column(
         modifier = modifier
@@ -102,7 +103,7 @@ fun TorTeeMenteeListScreen(
             },
             modifier = Modifier
                 .weight(7f),
-            // bulletins = /*TODO LIST BULLETINS*/
+            bulletins = viewModel.bulletinList.collectAsState().value ?: listOf()
         )
     }
 }
@@ -115,11 +116,11 @@ fun MenteeBoard(
     bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>()
 ) {
     // test 용도
-    val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
-        MenteeBulletin(writer = "Test1"),
-        MenteeBulletin(writer = "Test2"),
-        MenteeBulletin(writer = "Test3")
-    )
+  //  val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
+    //    MenteeBulletin(writer = User(name = "Test1")),
+    //    MenteeBulletin(writer = User(name = "Test2")),
+  //      MenteeBulletin(writer = User(name = "Test3"))
+  //  )
 
     Column(
         modifier = modifier.fillMaxSize()
@@ -187,11 +188,7 @@ fun MenteeBulletinCard(
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = bulletin.tag,
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center
-                    )
+
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -363,11 +360,7 @@ fun MenteeBulletinDialog(
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = bulletin.tag,
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center
-                    )
+
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,

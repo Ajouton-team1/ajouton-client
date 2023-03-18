@@ -28,7 +28,7 @@ interface TorTeeApiService {
     
     @GET("/posting/all")
     suspend fun getMentiList(
-    ): MentiBulletinResponse
+    ): List<menti>
 
     @GET("/posting")
     fun getOneMenti(

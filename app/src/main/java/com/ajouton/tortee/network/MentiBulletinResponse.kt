@@ -2,9 +2,7 @@ package com.ajouton.tortee.network
 
 import com.google.gson.annotations.SerializedName
 
-data class MentiBulletinResponse(
-    var mentiList : ArrayList<menti>
-)
+
 
 data class menti(
     @SerializedName("createdAt")
