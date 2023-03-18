@@ -250,7 +250,7 @@ fun NavigationBarAbove_Mentee(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .background(Color(R.color.search_bar))
+                    .background(color = Color(0xFFF0E9D2))
                     .padding(10.dp, 0.dp)
             ) {
                 TextField(

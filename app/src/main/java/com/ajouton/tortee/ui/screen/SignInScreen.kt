@@ -6,14 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.ajouton.tortee.R
@@ -22,7 +22,7 @@ import com.ajouton.tortee.network.UserSignInRequest
 
 @Composable
 fun SignInScreen(
-    viewModel: TorTeeViewModel
+    viewModel: TorTeeViewModel,
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -32,7 +32,14 @@ fun SignInScreen(
             painter = painterResource(id = R.drawable.kakaotalk_20230319_045252567),
             contentDescription = null
         )
-        TextField(
+        OutlinedTextField(
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.placeholder_id),
+                    color = Color.LightGray,
+                    style = MaterialTheme.typography.body1
+                )
+            },
             value = viewModel.userIdInput.collectAsState().value,
             onValueChange = {
                 viewModel.updateUserIdInput(it)
@@ -40,15 +47,38 @@ fun SignInScreen(
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
             ),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = Color.Black,
+                cursorColor = Color.Black,
+                backgroundColor = Color.White,
+                focusedIndicatorColor = Color.Black,
+                unfocusedIndicatorColor = Color.Black,
+                disabledIndicatorColor = Color.Unspecified
+            )
         )
         Spacer(modifier = Modifier.padding(12.dp))
-        TextField(
+        OutlinedTextField(
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.placeholder_password),
+                    color = Color.LightGray,
+                    style = MaterialTheme.typography.body1
+                )
+            },
             value = viewModel.userPasswordInput.collectAsState().value,
             onValueChange = {
                 viewModel.updateUserPasswordInput(it)
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
+            ),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = Color.Black,
+                cursorColor = Color.Black,
+                backgroundColor = Color.White,
+                focusedIndicatorColor = Color.Black,
+                unfocusedIndicatorColor = Color.Black,
+                disabledIndicatorColor = Color.Unspecified
             )
         )
         Spacer(modifier = Modifier.padding(12.dp))
@@ -57,7 +87,7 @@ fun SignInScreen(
                 viewModel.signIn()
             }
         ) {
-            Text("Sign In")
+            Text(text = stringResource(id = R.string.sign_in))
         }
         Spacer(modifier = Modifier.padding(12.dp))
         Button(
@@ -65,7 +95,7 @@ fun SignInScreen(
                 viewModel.setSignUpPageVisibility(true)
             }
         ) {
-            Text("Sign Up")
+            Text(text = stringResource(id = R.string.sign_up))
         }
     }
 
