@@ -19,8 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -220,40 +222,71 @@ fun MentorRequestDialog(
         properties = properties
     ) {
         Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.9f)
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = Color.White)
         ) {
-            Row() {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
                 Image(
                     painter = painterResource(id = user.imageResId),
                     contentDescription = null
                 )
-                Column() {
+                Column(
+                    verticalArrangement = Arrangement.SpaceAround,
+                    horizontalAlignment = Alignment.Start
+                ) {
                     Text(
                         text = user.name
                     )
                     Text(text = user.email)
                 }
             }
-            Box(modifier = Modifier) {
+            Box(
+                modifier = Modifier
+                    .background(Color.LightGray)
+            ) {
                 Text(text = user.info)
             }
-            Box(modifier = Modifier) {
+            Box(
+                modifier = Modifier
+                    .background(Color.LightGray)
+            ) {
                 LazyColumn {
                     items(user.technics) { technic ->
                         Text(text = technic)
                     }
                 }
             }
-            Row() {
+            Row(modifier = Modifier.padding(10.dp)) {
                 Text(
                     text = stringResource(id = R.string.button_cancle),
-                    modifier = Modifier.clickable { onDismissRequest }
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .clickable { onDismissRequest }
+                        .weight(1f)
+                        .background(Color.LightGray)
+                        .clip(RoundedCornerShape(12.dp))
                 )
                 Text(
                     text = stringResource(id = R.string.button_submit),
-                    modifier = Modifier.clickable { onSubmitRequest }
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .clickable { onSubmitRequest }
+                        .weight(1f)
+                        .background(Color.LightGray)
+                        .clip(RoundedCornerShape(12.dp))
                 )
             }
         }
