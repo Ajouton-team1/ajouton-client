@@ -208,67 +208,72 @@ fun NavigationBarAbove(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Text(
-            text = stringResource(id = R.string.app_name),
-            style = MaterialTheme.typography.h3,
-            modifier = Modifier.padding(6.dp)
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.wrapContentSize()
+        AnimatedVisibility(
+            visible = isSearching,
+            enter = slideInHorizontally(initialOffsetX = { it }),
+            exit = slideOutHorizontally(targetOffsetX = { it }),
         ) {
-            AnimatedVisibility(
-                visible = isSearching,
-                enter = slideInHorizontally(initialOffsetX = { it }),
-                exit = slideOutHorizontally(targetOffsetX = { it }),
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clip(shape = RoundedCornerShape(12.dp))
+                    .background(Color(R.color.search_bar))
+                    .padding(10.dp, 0.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .clip(shape = RoundedCornerShape(12.dp))
-                        .background(Color(R.color.search_bar))
-                ) {
-                    TextField(
-                        value = text,
-                        singleLine = true,
-                        shape = RectangleShape,
-                        colors = TextFieldDefaults.textFieldColors(
-                            textColor = Color.Black,
-                            cursorColor = Color.Black,
-                            backgroundColor = Color.Unspecified,
-                            focusedIndicatorColor = Color.Unspecified,
-                            unfocusedIndicatorColor = Color.Unspecified,
-                            disabledIndicatorColor = Color.Unspecified
-                        ),
-                        modifier = Modifier.weight(1f),
-                        onValueChange = {
-                            onValueChange(it.toString())
-                            text = it
-                        }
-                    )
-                    IconButton(
-                        onClick = {
-                            onCloseButtonClick()
-                            text = TextFieldValue("")
-                        },
-                        modifier = Modifier.size(36.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_close_24),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(36.dp)
-                        )
+                TextField(
+                    value = text,
+                    singleLine = true,
+                    shape = RectangleShape,
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = Color.Black,
+                        cursorColor = Color.Black,
+                        backgroundColor = Color.Unspecified,
+                        focusedIndicatorColor = Color.Unspecified,
+                        unfocusedIndicatorColor = Color.Unspecified,
+                        disabledIndicatorColor = Color.Unspecified
+                    ),
+                    modifier = Modifier.weight(9f),
+                    onValueChange = {
+                        onValueChange(it.toString())
+                        text = it
                     }
+                )
+                IconButton(
+                    onClick = {
+                        onCloseButtonClick()
+                        text = TextFieldValue("")
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_close_24),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(36.dp)
+                    )
                 }
             }
-            AnimatedVisibility(visible = !isSearching) {
+        }
+        AnimatedVisibility(visible = !isSearching) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.mentor_board),
+                    style = MaterialTheme.typography.h3,
+                    modifier = Modifier.padding(6.dp,0.dp)
+                )
                 IconButton(
                     onClick = onSearchButtonClick,
                     modifier = Modifier
@@ -364,28 +369,39 @@ fun MentorRequestDialog(
                 }
             }
             Row(modifier = Modifier.padding(10.dp)) {
-                Text(
-                    text = stringResource(id = R.string.button_cancle),
-                    style = MaterialTheme.typography.button,
-                    textAlign = TextAlign.Center,
+                Button(
+                    onClick = onSubmitRequest,
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(Color.LightGray)
-                        .clickable(onClick = onDismissRequest)
-                )
-                Text(
-                    text = stringResource(id = R.string.button_submit),
-                    style = MaterialTheme.typography.button,
-                    textAlign = TextAlign.Center,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.button_cancel),
+                        style = MaterialTheme.typography.button,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(10.dp)
+                    )
+                }
+                Button(
+                    onClick = onSubmitRequest,
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(Color.LightGray)
-                        .clickable(onClick = onSubmitRequest)
-                )
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.button_submit),
+                        style = MaterialTheme.typography.button,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(10.dp)
+                    )
+                }
+
             }
         }
     }
