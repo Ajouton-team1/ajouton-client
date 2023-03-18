@@ -44,7 +44,7 @@ fun TorTeeMyPageScreen(
     when(dialogIndex) {
         1 -> MyMentorDialog(onDismissRequest = { dialogIndex = 0 }, users = listOf(User(),User()))
         2 -> MyMenteeDialog(onDismissRequest = { dialogIndex = 0 }, users = listOf())
-        3 -> MyHistoryDialog(onDismissRequest = { dialogIndex = 0 }, bulletins = listOf(Bulletin("","Title","Body")))
+        3 -> MyHistoryDialog(onDismissRequest = { dialogIndex = 0 }, bulletins = listOf(Bulletin()))
     }
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
@@ -71,7 +71,7 @@ fun TorTeeMyPageScreen(
                     .padding(10.dp)
             ) {
                 Image(
-                    painter = painterResource(id = user.imageResId),
+                    painter = painterResource(id = R.drawable.user_icon),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
@@ -198,7 +198,7 @@ fun MyHistoryCard(
         elevation = 4.dp,
         modifier = modifier
             .fillMaxWidth()
-            .height(170.dp)
+            .height(150.dp)
             .padding(8.dp),
         shape = RoundedCornerShape(24.dp)
     ) {
@@ -213,7 +213,6 @@ fun MyHistoryCard(
                 style = MaterialTheme.typography.h4,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.padding(0.dp,10.dp))
             Text(
                 text = bulletin.content,
                 maxLines = 2,
@@ -368,7 +367,7 @@ fun MyHistoryDialog(
             Text(
                 text = stringResource(id = R.string.button_my_document),
                 style = MaterialTheme.typography.h5,
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.padding(5.dp)
             )
             MyHistoryGrid(bulletins = bulletins)
         }

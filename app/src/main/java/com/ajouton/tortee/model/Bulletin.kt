@@ -1,7 +1,8 @@
 package com.ajouton.tortee.model
 
 data class Bulletin (
-    val writer: String,
-    val title: String,
-    val content: String
+    val writer: User = User(),
+    val title: String = "Title",
+    val writeDate: String = "xxxx:xx:xx",
+    val content: String = "content"
 )

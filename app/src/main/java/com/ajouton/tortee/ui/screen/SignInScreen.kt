@@ -21,7 +21,6 @@ import com.ajouton.tortee.network.UserSignInRequest
 fun SignInScreen(
     viewModel: TorTeeViewModel
 ) {
-    val userSignUpRequest = UserSignInRequest("email", "password")
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -49,7 +48,7 @@ fun SignInScreen(
         Spacer(modifier = Modifier.padding(12.dp))
         Button(
             onClick = {
-                viewModel.signIn(userSignUpRequest)
+                viewModel.signIn()
             }
         ) {
             Text("Sign In")
