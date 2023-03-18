@@ -18,8 +18,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ajouton.tortee.data.ViewType
-import com.ajouton.tortee.model.User
-import com.ajouton.tortee.network.UserSignUpRequest
 import com.ajouton.tortee.ui.screen.*
 import com.ajouton.tortee.ui.state.TorteeUIState
 import com.ajouton.tortee.ui.theme.TorTeeTheme
@@ -36,12 +34,20 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val viewModel: TorTeeViewModel = viewModel()
-                    SignUpScreen(
-                        viewModel = viewModel
-                    )
-//                    TorTeeScreen(
-//                        viewModel = viewModel
-//                    )
+                    if(!viewModel.signUpPageVisibility.collectAsState().value) {
+                        SignUpScreen(
+
+                        )
+                    }
+                    if(!viewModel.isSignedIn.collectAsState().value) {
+                        SignInScreen(
+                            viewModel = viewModel
+                        )
+                    } else {
+                        TorTeeScreen(
+                            viewModel = viewModel
+                        )
+                    }
                 }
             }
         }

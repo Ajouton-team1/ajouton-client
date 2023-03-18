@@ -8,10 +8,10 @@ interface TorTeeApiService {
     @GET("users")
     suspend fun getUsers(): List<User>
 
-    @POST("members/signIn")
-    suspend fun signUp(
-        @Header("token") accept: String,
-        @Body jsonparams: UserSignUpRequest
-    ): Boolean
+    @POST("auth/login")
+    suspend fun signIn(
+//        @Header("token") accept: String,
+        @Body signInParams: UserSignInRequest
+    ): UserSignInResponse
 
 }
