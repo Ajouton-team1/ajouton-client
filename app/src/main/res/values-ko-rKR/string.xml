@@ -38,4 +38,5 @@
 
     <string name="sign_in">로그인</string>
     <string name="sign_up">회원가입</string>
+    <string name="go_back">뒤로가기</string>
 </resources>
