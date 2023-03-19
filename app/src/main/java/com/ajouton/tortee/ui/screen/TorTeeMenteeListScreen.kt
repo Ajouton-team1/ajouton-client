@@ -28,7 +28,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.ajouton.tortee.R
 import com.ajouton.tortee.TorTeeViewModel
-import com.ajouton.tortee.model.Bulletin
 import com.ajouton.tortee.model.MenteeBulletin
 import com.ajouton.tortee.model.User
 import com.ajouton.tortee.ui.theme.TorTeeTheme
@@ -54,23 +53,26 @@ fun TorTeeMenteeListScreen(
         if (isDialogVisible) {
             MenteeBulletinDialog(
                 onDismissRequest = { isDialogVisible = false },
-                onSubmitRequest = { /* TODO */ },
+                onSubmitRequest = { targetBulletin ->
+                    viewModel.makeMatching(true, targetBulletin.writerId)
+                    isDialogVisible = false},
                 bulletin = targetBulletin
             )
         }
         if (isMakeDialogVisible) {
-            MenteeBulletinMakeDialog(
-                onDismissRequest = { isMakeDialogVisible = false },
-                onSubmitRequest = {
-                    viewModel.writeMenteePosting(
-                        it.title,
-                        it.content,
-                        viewModel.userSignInResponse.value.id
+                    MenteeBulletinMakeDialog(
+                        onDismissRequest = { isMakeDialogVisible = false },
+                        onSubmitRequest = {
+                            viewModel.writeMenteePosting(
+                                it.title,
+                                it.content,
+                                viewModel.userSignInResponse.value.id
+                            )
+                            isMakeDialogVisible = false
+                        },
+                        user = User(id = viewModel.userSignInResponse.collectAsState().value.id) // 사용자로 변경 필요
                     )
-                },
-                user = User() // 사용자로 변경 필요
-            )
-        }
+                }
         NavigationBarAbove_Mentee(
             modifier = Modifier
                 .weight(1f),
@@ -120,7 +122,7 @@ fun TorTeeMenteeListScreen(
 fun MenteeBoard(
     onClickCard: (MenteeBulletin) -> Unit,
     modifier: Modifier,
-    bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>()
+    bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(),
 ) {
     // test 용도
     //  val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
@@ -325,7 +327,7 @@ fun NavigationBarAbove_Mentee(
 @Composable
 fun MenteeBulletinDialog(
     onDismissRequest: () -> Unit,
-    onSubmitRequest: () -> Unit,
+    onSubmitRequest: (MenteeBulletin) -> Unit,
     properties: DialogProperties = DialogProperties(),
     bulletin: MenteeBulletin,
 ) {
@@ -404,7 +406,7 @@ fun MenteeBulletinDialog(
                         .padding(10.dp)
                 )
                 Button(
-                    onClick = onSubmitRequest,
+                    onClick = { onSubmitRequest(bulletin) },
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
@@ -427,9 +429,10 @@ fun MenteeBulletinMakeDialog(
     user: User,
     properties: DialogProperties = DialogProperties(),
 ) {
-    val time = Calendar.getInstance().time
-    val formatter = SimpleDateFormat("yyyy.MM.dd")
-    val current = formatter.format(time)
+    val now = System.currentTimeMillis();
+    val date = Date(now)
+    val formatter = SimpleDateFormat("yyyy-MM-dd")
+    val current = formatter.format(date)
 
     var title: String by remember { mutableStateOf("") }
     var content: String by remember { mutableStateOf("") }
@@ -547,7 +550,8 @@ fun MenteeBulletinMakeDialog(
                                 title = title,
                                 writeDate = current,
                                 content = content,
-                                tag = tag
+                                tag = tag,
+                                writerId = user.id
                             )
                         )
                     },
