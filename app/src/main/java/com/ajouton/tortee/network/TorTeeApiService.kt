@@ -30,10 +30,16 @@ interface TorTeeApiService {
     suspend fun getMentiList(
     ): List<menti>?
 
+
     @GET("/posting")
     suspend fun getOneMenti(
         @Query("postingId") postingId : Int?,
     ): MentiDetailResponse
+
+    @GET("/posting/all")
+    fun searchmenti(
+        @Query("search") search : String?,
+    ): List<menti>
 
     @POST("/matching")
     suspend fun makeMatching(
