@@ -37,7 +37,7 @@ class TorTeeViewModel() : ViewModel() {
 
     private val _uiState = MutableStateFlow(TorteeUIState())
     private val _userInfo = MutableStateFlow(User(-1, "", "", "", "", listOf()))
-    private val _getMyInfoResponse = MutableStateFlow<GetMyInfoResponse?>(null)
+    private val _getMyInfoResponse = MutableStateFlow<GetMyInfoResponse>(GetMyInfoResponse())
 
     // sign up
     private val _signUpPageVisibility = MutableStateFlow(false)
@@ -73,7 +73,7 @@ class TorTeeViewModel() : ViewModel() {
 
     val uiState: StateFlow<TorteeUIState> = _uiState
     val userInfo: StateFlow<User> = _userInfo
-    val getMyInfoResponse: StateFlow<GetMyInfoResponse?> = _getMyInfoResponse
+    val getMyInfoResponse: StateFlow<GetMyInfoResponse> = _getMyInfoResponse
 
     // sign up
     val signUpPageVisibility: StateFlow<Boolean> = _signUpPageVisibility
@@ -382,14 +382,21 @@ class TorTeeViewModel() : ViewModel() {
         viewModelScope.launch {
             _getMyInfoResponse.update {
                 try {
+                    Log.e("", "success")
                     retrofitService.getMyInfo(getMyInfoRequest)
                 } catch (e: IOException) {
-                    null
+                    Log.e("", "ioexception")
+                    GetMyInfoResponse()
                 } catch (e: HttpException) {
-                    null
+                    Log.e("", "httpexception")
+                    GetMyInfoResponse()
                 }
             }
+            _userInfo.update {
+                User(getMyInfoResponse.value.memberId, getMyInfoResponse.value!!.email, getMyInfoResponse.value!!.description, getMyInfoResponse.value!!.name, getMyInfoResponse.value!!.nickname, listOf("java", "spring", "flask"))
+            }
         }
+
     }
 
     fun getBulletinList(): List<Bulletin> {

@@ -5,32 +5,32 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetMyInfoResponse(
-    val createdAt: String,
-    val updatedAt: String,
-    val memberId: Int,
-    val email: String,
-    val password: String,
-    val name: String,
-    val nickname: String,
-    val description: String,
+    val createdAt: String = "",
+    val updatedAt: String = "",
+    val memberId: Int = 0,
+    val email: String = "",
+    val password: String = "",
+    val name: String = "",
+    val nickname: String = "",
+    val description: String = "",
     @SerializedName("memberTags")
-    val myMemberTags: List<MyMemberTags>
+    val myMemberTags: List<MyMemberTags> = listOf(MyMemberTags())
 )
 
 @Serializable
 data class MyMemberTags(
-    val createdAt: String,
-    val updatedAt: String,
-    val memberTagId: Int,
-    val memberId: Int,
-    val tagId: Int,
-    val tag: MyTag
+    val createdAt: String = "",
+    val updatedAt: String = "",
+    val memberTagId: Int = 0,
+    val memberId: Int = 0,
+    val tagId: Int = 0,
+    val tag: MyTag = MyTag()
 )
 
 @Serializable
 data class MyTag(
-    val createdAt: String,
-    val updatedAt: String,
-    val tagId: Int,
-    val name: String
+    val createdAt: String = "",
+    val updatedAt: String = "",
+    val tagId: Int = 0,
+    val name: String = ""
 )

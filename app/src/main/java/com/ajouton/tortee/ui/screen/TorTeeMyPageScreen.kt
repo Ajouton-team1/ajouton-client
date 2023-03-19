@@ -39,7 +39,7 @@ fun TorTeeMyPageScreen(
     modifier: Modifier,
     viewModel: TorTeeViewModel,
 ) {
-    var user by remember { mutableStateOf(User()) }
+    val user = viewModel.userInfo.collectAsState().value
     var dialogIndex by remember { mutableStateOf(0) }
     when(dialogIndex) {
         1 -> MyMentorDialog(onDismissRequest = { dialogIndex = 0 }, users = listOf(User(),User()))
