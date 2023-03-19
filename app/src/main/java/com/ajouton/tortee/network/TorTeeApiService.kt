@@ -1,7 +1,6 @@
 package com.ajouton.tortee.network
 
 import com.ajouton.tortee.model.User
-import retrofit2.Call
 import retrofit2.http.*
 
 interface TorTeeApiService {
@@ -38,8 +37,8 @@ interface TorTeeApiService {
 
     @GET("/posting/all")
     fun searchmenti(
-        @Query("search") search : String?,
-    ): List<menti>
+        @Query("search") search: GetMentiRequest,
+    ): GetMentiResponse
 
     @POST("/matching")
     suspend fun makeMatching(

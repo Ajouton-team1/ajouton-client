@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ajouton.tortee.data.BoardDataProvider
 import com.ajouton.tortee.model.Bulletin
 import com.ajouton.tortee.data.ViewType
@@ -67,6 +66,9 @@ class TorTeeViewModel() : ViewModel() {
     private val _selectedBulletin = MutableStateFlow(Bulletin("", "", ""))
     private val _bulletinList = MutableStateFlow<List<MenteeBulletin>?>(null)
 
+    private val _searchMenteeResponse = MutableStateFlow<GetMentiResponse?>(null)
+
+
     // write mentee posting
     private val _writeMenteePostingResponse = MutableStateFlow(WriteMenteePostingResponse(false))
 
@@ -94,7 +96,7 @@ class TorTeeViewModel() : ViewModel() {
     // search mentor
     val searchMentorResponse: StateFlow<GetUserResponse?> = _searchMentorResponse
     val mentorList: StateFlow<List<User>?> = _mentorList
-
+    val searchMentiResponse : StateFlow<GetMentiResponse?> = _searchMenteeResponse
     // bulletin
     val bulletinListRespose: StateFlow<List<menti>?> = _bulletinRespose
     val isBulletinContentShowing: StateFlow<Boolean> = _isBulletinContentShowing
@@ -232,7 +234,54 @@ class TorTeeViewModel() : ViewModel() {
         }
 //        getMenteeList()
     }
+    fun searchMenti(title: String){
 
+        lateinit var searchMenteeRequest: GetMentiRequest
+        if(title == "") GetMentiRequest("")
+        else{
+            GetMentiRequest(title)
+        }
+
+        viewModelScope.launch {
+            _searchMenteeResponse.update {
+                try {
+                    Log.e("searchMentor", "Success")
+                    retrofitService.searchmenti(searchMenteeRequest)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    Log.e("searchMentor", "IOException")
+                    null
+                } catch (e: HttpException) {
+                    Log.e("searchMentor", "HttpException")
+                    null
+                }
+            }
+            _bulletinList.update { listOf() }
+            var list: ArrayList<MenteeBulletin> = arrayListOf()
+            searchMentiResponse.value?.member?.name?.let {
+                searchMentiResponse.value?.title?.let { it1 ->
+                    searchMentiResponse.value?.createdAt?.let { it2 ->
+                        searchMentiResponse.value?.content?.let { it3 ->
+                            MenteeBulletin(
+                                it,
+                                it1,
+                                it2,
+                                it3
+                            )
+                        }
+                    }
+                }
+            }?.let {
+                list.add(
+                    it
+                )
+            }
+
+            _bulletinList.update {
+                list
+            }
+        }
+    }
     @SuppressLint("SuspiciousIndentation")
     fun searchMentor(tag: String) {
         Log.e("", tag)
