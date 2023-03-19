@@ -36,6 +36,6 @@
     <string name="preference_file_key">preference_file_key</string>
     <string name="preference_user_id">UserId</string>
 
-    <string name="sign_in">Sign In</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">로그인</string>
+    <string name="sign_up">회원가입</string>
 </resources>
