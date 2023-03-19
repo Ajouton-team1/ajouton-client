@@ -22,7 +22,7 @@
     <string name="placeholder_id">Id</string>
     <string name="placeholder_password">Password</string>
     <string name="mypage_title">MyPage</string>
-    <string name="greeting">, Nice to Meet you!</string>
+    <string name="greeting">, \nNice to Meet you!</string>
     <string name="mypage_info">Description</string>
     <string name="mypage_technic">Techniques</string>
 
