@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ajouton.tortee.data.ViewType
@@ -68,17 +69,17 @@ fun TorTeeScreen(
     val navigationItemContentList = listOf(
         NavigationItemContent(
             viewType = ViewType.MentorList,
-            icon = R.drawable.user_icon,
+            icon = R.drawable.free_icon_share_3586471_1,
             text = "MentorList"
         ),
         NavigationItemContent(
             viewType = ViewType.MenteeList,
-            icon = R.drawable.user_icon,
+            icon = R.drawable.free_icon_ask_for_help_5201246_1,
             text = "MenteeList"
         ),
         NavigationItemContent(
             viewType = ViewType.Board,
-            icon = R.drawable.user_icon,
+            icon = R.drawable.free_icon_open_book_1375505_1,
             text = "Board"
         ),
         NavigationItemContent(
@@ -171,7 +172,7 @@ private fun TorTeeBottomNavigationBar(
                 },
                 icon = {
                     Icon(
-                        imageVector = ImageVector.vectorResource(id = navItem.icon),
+                        painterResource(id = navItem.icon),
                         contentDescription = navItem.text,
                         modifier = Modifier
                             .fillMaxSize(0.6f)
