@@ -230,7 +230,7 @@ class TorTeeViewModel() : ViewModel() {
                 }
             }
         }
-//        getMenteeList()
+        getMenteeList()
     }
 
 
