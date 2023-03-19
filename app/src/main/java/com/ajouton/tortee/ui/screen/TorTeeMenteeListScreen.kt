@@ -61,7 +61,13 @@ fun TorTeeMenteeListScreen(
         if (isMakeDialogVisible) {
             MenteeBulletinMakeDialog(
                 onDismissRequest = { isMakeDialogVisible = false },
-                onSubmitRequest = { /*TODO*/ },
+                onSubmitRequest = {
+                    viewModel.writeMenteePosting(
+                        it.title,
+                        it.content,
+                        viewModel.userSignInResponse.value.id
+                    )
+                },
                 user = User() // 사용자로 변경 필요
             )
         }
@@ -117,11 +123,11 @@ fun MenteeBoard(
     bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>()
 ) {
     // test 용도
-  //  val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
+    //  val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
     //    MenteeBulletin(writer = User(name = "Test1")),
     //    MenteeBulletin(writer = User(name = "Test2")),
-  //      MenteeBulletin(writer = User(name = "Test3"))
-  //  )
+    //      MenteeBulletin(writer = User(name = "Test3"))
+    //  )
 
     Column(
         modifier = modifier.fillMaxSize()
@@ -534,7 +540,17 @@ fun MenteeBulletinMakeDialog(
                     )
                 }
                 Button(
-                    onClick = { onSubmitRequest(MenteeBulletin(writer = user.name, title = title, writeDate = current, content = content, tag = tag)) },
+                    onClick = {
+                        onSubmitRequest(
+                            MenteeBulletin(
+                                writer = user.name,
+                                title = title,
+                                writeDate = current,
+                                content = content,
+                                tag = tag
+                            )
+                        )
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)

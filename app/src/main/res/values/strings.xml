@@ -24,7 +24,7 @@
     <string name="mypage_title">MyPage</string>
     <string name="greeting">, Nice to Meet you!</string>
     <string name="mypage_info">Description</string>
-    <string name="mypage_technic">Technics</string>
+    <string name="mypage_technic">Techniques</string>
 
     <string name="signup_email">Email</string>
     <string name="signup_password">Password</string>
