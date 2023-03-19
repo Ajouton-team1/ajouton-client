@@ -234,54 +234,7 @@ class TorTeeViewModel() : ViewModel() {
         }
 //        getMenteeList()
     }
-    fun searchMenti(title: String){
 
-        lateinit var searchMenteeRequest: GetMentiRequest
-        if(title == "") GetMentiRequest("")
-        else{
-            GetMentiRequest(title)
-        }
-
-        viewModelScope.launch {
-            _searchMenteeResponse.update {
-                try {
-                    Log.e("searchMentor", "Success")
-                    retrofitService.searchmenti(searchMenteeRequest)
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    Log.e("searchMentor", "IOException")
-                    null
-                } catch (e: HttpException) {
-                    Log.e("searchMentor", "HttpException")
-                    null
-                }
-            }
-            _bulletinList.update { listOf() }
-            var list: ArrayList<MenteeBulletin> = arrayListOf()
-            searchMentiResponse.value?.member?.name?.let {
-                searchMentiResponse.value?.title?.let { it1 ->
-                    searchMentiResponse.value?.createdAt?.let { it2 ->
-                        searchMentiResponse.value?.content?.let { it3 ->
-                            MenteeBulletin(
-                                it,
-                                it1,
-                                it2,
-                                it3
-                            )
-                        }
-                    }
-                }
-            }?.let {
-                list.add(
-                    it
-                )
-            }
-
-            _bulletinList.update {
-                list
-            }
-        }
-    }
     @SuppressLint("SuspiciousIndentation")
     fun searchMentor(tag: String) {
         Log.e("", tag)
@@ -333,8 +286,7 @@ class TorTeeViewModel() : ViewModel() {
 
     fun getMenteeList() {
         viewModelScope.launch {
-            _bulletinRespose.update {
-                try {
+            _bulletinRespose.update {                try {
                     Log.e("mentee", "Success")
                     retrofitService.getMentiList()
                 } catch (e: IOException) {
@@ -400,6 +352,8 @@ class TorTeeViewModel() : ViewModel() {
     fun hideSignUpPage() {
         _signUpPageVisibility.update { false }
     }
+
+
 
     fun signIn() {
         val userSignInRequest = UserSignInRequest(userIdInput.value, userPasswordInput.value)
