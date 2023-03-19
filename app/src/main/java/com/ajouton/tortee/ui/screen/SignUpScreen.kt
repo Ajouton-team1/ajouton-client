@@ -47,7 +47,7 @@ fun SignUpScreen(
             },
             value = viewModel.signUpEmail.collectAsState().value,
             onValueChange = {
-                viewModel.updateUserIdInput(it)
+                viewModel.updateSignUpEmail(it)
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
@@ -72,7 +72,7 @@ fun SignUpScreen(
             },
             value = viewModel.signUpPassword.collectAsState().value,
             onValueChange = {
-                viewModel.updateUserIdInput(it)
+                viewModel.updateSignUpPassword(it)
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
@@ -97,7 +97,7 @@ fun SignUpScreen(
             },
             value = viewModel.signUpName.collectAsState().value,
             onValueChange = {
-                viewModel.updateUserIdInput(it)
+                viewModel.updateSignUpName(it)
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
@@ -122,7 +122,7 @@ fun SignUpScreen(
             },
             value = viewModel.signUpNickname.collectAsState().value,
             onValueChange = {
-                viewModel.updateUserIdInput(it)
+                viewModel.updateSignUpNickname(it)
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
@@ -147,7 +147,7 @@ fun SignUpScreen(
             },
             value = viewModel.signUpDescription.collectAsState().value,
             onValueChange = {
-                viewModel.updateUserIdInput(it)
+                viewModel.updateSignUpDescription(it)
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next

@@ -1,6 +1,5 @@
 package com.ajouton.tortee.network
 
-import com.ajouton.tortee.data.MemberInfo
 import com.google.gson.annotations.SerializedName
 
 data class MentiDetailResponse(

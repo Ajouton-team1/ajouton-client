@@ -43,7 +43,7 @@ fun TorTeeMenteeListScreen(
     var isMakeDialogVisible by remember { mutableStateOf(false) }
     var isDialogVisible by remember { mutableStateOf(false) }
     var isSearching by remember { mutableStateOf(false) }
-    var targetBulletin by remember { mutableStateOf(MenteeBulletin()) }
+    var targetBulletin by remember { mutableStateOf(MenteeBulletin("","","","")) }
     viewModel.getMenteeList()
 
     Column(
@@ -54,16 +54,26 @@ fun TorTeeMenteeListScreen(
         if (isDialogVisible) {
             MenteeBulletinDialog(
                 onDismissRequest = { isDialogVisible = false },
-                onSubmitRequest = { /* TODO */ },
+                onSubmitRequest = { targetBulletir ->
+                    viewModel.makeMatching(true, targetBulletir.writerId) },
                 bulletin = targetBulletin
             )
         }
         if (isMakeDialogVisible) {
-            MenteeBulletinMakeDialog(
-                onDismissRequest = { isMakeDialogVisible = false },
-                onSubmitRequest = { /*TODO*/ },
-                user = User() // 사용자로 변경 필요
-            )
+            viewModel.getMyInfoResponse.collectAsState().value?.let { User(id = viewModel.userSignInResponse.collectAsState().value.id, name = it.name) }
+                ?.let {
+                    MenteeBulletinMakeDialog(
+                        onDismissRequest = { isMakeDialogVisible = false },
+                        onSubmitRequest = {
+                            viewModel.writeMenteePosting(
+                                it.title,
+                                it.content,
+                                viewModel.userSignInResponse.value.id
+                            )
+                        },
+                        user = it // 사용자로 변경 필요
+                    )
+                }
         }
         NavigationBarAbove_Mentee(
             modifier = Modifier
@@ -117,11 +127,11 @@ fun MenteeBoard(
     bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>()
 ) {
     // test 용도
-  //  val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
+    //  val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
     //    MenteeBulletin(writer = User(name = "Test1")),
     //    MenteeBulletin(writer = User(name = "Test2")),
-  //      MenteeBulletin(writer = User(name = "Test3"))
-  //  )
+    //      MenteeBulletin(writer = User(name = "Test3"))
+    //  )
 
     Column(
         modifier = modifier.fillMaxSize()
@@ -248,7 +258,7 @@ fun NavigationBarAbove_Mentee(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .background(color = Color(0xFFF0E9D2))
+                    .background(Color(R.color.search_bar))
                     .padding(10.dp, 0.dp)
             ) {
                 TextField(
@@ -319,7 +329,7 @@ fun NavigationBarAbove_Mentee(
 @Composable
 fun MenteeBulletinDialog(
     onDismissRequest: () -> Unit,
-    onSubmitRequest: () -> Unit,
+    onSubmitRequest: (MenteeBulletin) -> Unit,
     properties: DialogProperties = DialogProperties(),
     bulletin: MenteeBulletin,
 ) {
@@ -398,7 +408,7 @@ fun MenteeBulletinDialog(
                         .padding(10.dp)
                 )
                 Button(
-                    onClick = onSubmitRequest,
+                    onClick = { onSubmitRequest(bulletin) },
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
@@ -534,7 +544,18 @@ fun MenteeBulletinMakeDialog(
                     )
                 }
                 Button(
-                    onClick = { onSubmitRequest(MenteeBulletin(writer = user.name, title = title, writeDate = current, content = content, tag = tag)) },
+                    onClick = {
+                        onSubmitRequest(
+                            MenteeBulletin(
+                                writer = user.name,
+                                title = title,
+                                writeDate = current,
+                                content = content,
+                                tag = tag,
+                                writerId = user.id
+                            )
+                        )
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
