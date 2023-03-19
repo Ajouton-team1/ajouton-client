@@ -28,6 +28,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.ajouton.tortee.R
 import com.ajouton.tortee.TorTeeViewModel
+import com.ajouton.tortee.model.Bulletin
 import com.ajouton.tortee.model.MenteeBulletin
 import com.ajouton.tortee.model.User
 import com.ajouton.tortee.ui.theme.TorTeeTheme
@@ -60,7 +61,13 @@ fun TorTeeMenteeListScreen(
         if (isMakeDialogVisible) {
             MenteeBulletinMakeDialog(
                 onDismissRequest = { isMakeDialogVisible = false },
-                onSubmitRequest = { /*TODO*/ },
+                onSubmitRequest = {
+                    viewModel.writeMenteePosting(
+                        it.title,
+                        it.content,
+                        viewModel.userSignInResponse.value.id
+                    )
+                },
                 user = User() // 사용자로 변경 필요
             )
         }
@@ -116,11 +123,11 @@ fun MenteeBoard(
     bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>()
 ) {
     // test 용도
-  //  val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
+    //  val bulletins: List<MenteeBulletin> = listOf<MenteeBulletin>(
     //    MenteeBulletin(writer = User(name = "Test1")),
     //    MenteeBulletin(writer = User(name = "Test2")),
-  //      MenteeBulletin(writer = User(name = "Test3"))
-  //  )
+    //      MenteeBulletin(writer = User(name = "Test3"))
+    //  )
 
     Column(
         modifier = modifier.fillMaxSize()
@@ -416,7 +423,7 @@ fun MenteeBulletinDialog(
 @Composable
 fun MenteeBulletinMakeDialog(
     onDismissRequest: () -> Unit,
-    onSubmitRequest: () -> Unit,
+    onSubmitRequest: (MenteeBulletin) -> Unit,
     user: User,
     properties: DialogProperties = DialogProperties(),
 ) {
@@ -533,7 +540,17 @@ fun MenteeBulletinMakeDialog(
                     )
                 }
                 Button(
-                    onClick = onSubmitRequest,
+                    onClick = {
+                        onSubmitRequest(
+                            MenteeBulletin(
+                                writer = user.name,
+                                title = title,
+                                writeDate = current,
+                                content = content,
+                                tag = tag
+                            )
+                        )
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)

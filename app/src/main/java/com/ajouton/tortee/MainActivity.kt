@@ -39,6 +39,7 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     val viewModel: TorTeeViewModel = viewModel()
+
                     if(viewModel.signUpPageVisibility.collectAsState().value) {
                         SignUpScreen(
                             viewModel = viewModel
