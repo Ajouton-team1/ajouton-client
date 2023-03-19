@@ -65,7 +65,7 @@ class TorTeeViewModel() : ViewModel() {
     private val _bulletinRespose = MutableStateFlow<List<menti>?>(null)
 
     private val _selectedBulletin = MutableStateFlow(Bulletin("", "", ""))
-    private val _bullentinList = MutableStateFlow<List<MenteeBulletin>?>(null)
+    private val _bulletinList = MutableStateFlow<List<MenteeBulletin>?>(null)
 
     // write mentee posting
     private val _writeMenteePostingResponse = MutableStateFlow(WriteMenteePostingResponse(false))
@@ -105,7 +105,7 @@ class TorTeeViewModel() : ViewModel() {
         _writeMenteePostingResponse
 
     val selectedBulletin: StateFlow<Bulletin> = _selectedBulletin
-    val bulletinList: StateFlow<List<MenteeBulletin>?> = _bullentinList
+    val bulletinList: StateFlow<List<MenteeBulletin>?> = _bulletinList
     fun updateCurrentView(viewType: ViewType) {
         _uiState.update {
             it.copy(
@@ -230,6 +230,7 @@ class TorTeeViewModel() : ViewModel() {
                 }
             }
         }
+//        getMenteeList()
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -296,7 +297,7 @@ class TorTeeViewModel() : ViewModel() {
                     null
                 }
             }
-            _bullentinList.update { listOf() }
+            _bulletinList.update { listOf() }
             var list: ArrayList<MenteeBulletin> = arrayListOf()
             for (mentor in bulletinListRespose.value!!) {
                 list.add(
@@ -308,11 +309,9 @@ class TorTeeViewModel() : ViewModel() {
                     )
                 )
             }
-            _bullentinList.update {
+            _bulletinList.update {
                 list
             }
-
-
         }
     }
 

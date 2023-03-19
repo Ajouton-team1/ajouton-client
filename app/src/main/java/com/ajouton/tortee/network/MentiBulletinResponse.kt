@@ -31,7 +31,7 @@ data class MemberInfo(
     @SerializedName("email")
     var email : String,
     @SerializedName("password")
-    var password : Int,
+    var password : String,
     @SerializedName("name")
     var name: String,
     @SerializedName("nickname")

@@ -25,10 +25,10 @@ interface TorTeeApiService {
     suspend fun searchMentor(
         @Body searchMentorParams: GetUserRequest
     ): GetUserResponse?
-    
+
     @GET("/posting/all")
     suspend fun getMentiList(
-    ): List<menti>
+    ): List<menti>?
 
     @GET("/posting")
     suspend fun getOneMenti(
