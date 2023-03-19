@@ -42,7 +42,7 @@ fun TorTeeMenteeListScreen(
     var isMakeDialogVisible by remember { mutableStateOf(false) }
     var isDialogVisible by remember { mutableStateOf(false) }
     var isSearching by remember { mutableStateOf(false) }
-    var targetBulletin by remember { mutableStateOf(MenteeBulletin()) }
+    var targetBulletin by remember { mutableStateOf(MenteeBulletin("","","","")) }
     viewModel.getMenteeList()
 
     Column(
@@ -247,7 +247,7 @@ fun NavigationBarAbove_Mentee(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .background(color = Color(0xFFF0E9D2))
+                    .background(Color(R.color.search_bar))
                     .padding(10.dp, 0.dp)
             ) {
                 TextField(
