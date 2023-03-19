@@ -54,22 +54,26 @@ fun TorTeeMenteeListScreen(
         if (isDialogVisible) {
             MenteeBulletinDialog(
                 onDismissRequest = { isDialogVisible = false },
-                onSubmitRequest = { /* TODO */ },
+                onSubmitRequest = { targetUser ->
+                    viewModel.makeMatching(true, targetUser.id) },
                 bulletin = targetBulletin
             )
         }
         if (isMakeDialogVisible) {
-            MenteeBulletinMakeDialog(
-                onDismissRequest = { isMakeDialogVisible = false },
-                onSubmitRequest = {
-                    viewModel.writeMenteePosting(
-                        it.title,
-                        it.content,
-                        viewModel.userSignInResponse.value.id
+            viewModel.getMyInfoResponse.collectAsState().value?.let { User(id = viewModel.userSignInResponse.collectAsState().value.id, name = it.name) }
+                ?.let {
+                    MenteeBulletinMakeDialog(
+                        onDismissRequest = { isMakeDialogVisible = false },
+                        onSubmitRequest = {
+                            viewModel.writeMenteePosting(
+                                it.title,
+                                it.content,
+                                viewModel.userSignInResponse.value.id
+                            )
+                        },
+                        user = it // 사용자로 변경 필요
                     )
-                },
-                user = User() // 사용자로 변경 필요
-            )
+                }
         }
         NavigationBarAbove_Mentee(
             modifier = Modifier
