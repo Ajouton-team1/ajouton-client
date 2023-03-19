@@ -167,7 +167,7 @@ fun SignUpScreen(
                 viewModel.signUp()
             }
         ) {
-            Text("Sign Up")
+            Text(text = stringResource(id = R.string.sign_up))
         }
         Spacer(modifier = Modifier.padding(12.dp))
         Button(
@@ -175,7 +175,7 @@ fun SignUpScreen(
                     viewModel.hideSignUpPage()
                 }
                 ) {
-            Text("Go Back")
+            Text(text = stringResource(id = R.string.go_back))
         }
     }
 }

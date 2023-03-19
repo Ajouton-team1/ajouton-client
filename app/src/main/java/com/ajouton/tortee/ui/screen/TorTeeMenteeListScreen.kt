@@ -54,8 +54,8 @@ fun TorTeeMenteeListScreen(
         if (isDialogVisible) {
             MenteeBulletinDialog(
                 onDismissRequest = { isDialogVisible = false },
-                onSubmitRequest = { targetUser ->
-                    viewModel.makeMatching(true, targetUser.id) },
+                onSubmitRequest = { targetBulletir ->
+                    viewModel.makeMatching(true, targetBulletir.writerId) },
                 bulletin = targetBulletin
             )
         }
@@ -329,7 +329,7 @@ fun NavigationBarAbove_Mentee(
 @Composable
 fun MenteeBulletinDialog(
     onDismissRequest: () -> Unit,
-    onSubmitRequest: () -> Unit,
+    onSubmitRequest: (MenteeBulletin) -> Unit,
     properties: DialogProperties = DialogProperties(),
     bulletin: MenteeBulletin,
 ) {
@@ -408,7 +408,7 @@ fun MenteeBulletinDialog(
                         .padding(10.dp)
                 )
                 Button(
-                    onClick = onSubmitRequest,
+                    onClick = { onSubmitRequest(bulletin) },
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp)
@@ -551,7 +551,8 @@ fun MenteeBulletinMakeDialog(
                                 title = title,
                                 writeDate = current,
                                 content = content,
-                                tag = tag
+                                tag = tag,
+                                writerId = user.id
                             )
                         )
                     },
