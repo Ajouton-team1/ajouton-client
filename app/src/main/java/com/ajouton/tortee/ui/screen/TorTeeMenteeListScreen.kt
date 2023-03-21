@@ -54,7 +54,8 @@ fun TorTeeMenteeListScreen(
             MenteeBulletinDialog(
                 onDismissRequest = { isDialogVisible = false },
                 onSubmitRequest = { targetBulletin ->
-                    viewModel.makeMatching(true, targetBulletin.writerId) },
+                    viewModel.makeMatching(true, targetBulletin.writerId)
+                    isDialogVisible = false},
                 bulletin = targetBulletin
             )
         }
@@ -67,6 +68,7 @@ fun TorTeeMenteeListScreen(
                                 it.content,
                                 viewModel.userSignInResponse.value.id
                             )
+                            isMakeDialogVisible = false
                         },
                         user = User(id = viewModel.userSignInResponse.collectAsState().value.id) // 사용자로 변경 필요
                     )
